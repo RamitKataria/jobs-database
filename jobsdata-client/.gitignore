@@ -3,7 +3,3 @@
 
 # production
 /build
-
-# Editors
-.idea
-*.iml
