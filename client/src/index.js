@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// TODO: link to admin and user
 ReactDOM.render(
   <React.StrictMode>
     <App />
