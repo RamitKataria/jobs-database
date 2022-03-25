@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:socoolman@localhost:5432/postgres?schema=jobs-database-schema"
+}
+
+model associated_ind {
+  comid      Int
+  indname    String     @db.VarChar(50)
+  companies  companies  @relation(fields: [comid], references: [comid], onDelete: NoAction, onUpdate: NoAction)
+  industries industries @relation(fields: [indname], references: [indname], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([comid, indname])
+}
+
+model cities {
+  cityname  String    @db.VarChar(100)
+  state     String?   @db.VarChar(100)
+  counname  String    @db.VarChar(100)
+  countries countries @relation(fields: [counname], references: [counname], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([counname, cityname])
+}
+
+model citizenshipreq {
+  reqid     Int       @id
+  statusreq String?   @db.VarChar(100)
+  counname  String    @db.VarChar(100)
+  countries countries @relation(fields: [counname], references: [counname], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model companies {
+  comid          Int              @id
+  comname        String?          @db.VarChar(100)
+  nempl          Int?
+  associated_ind associated_ind[]
+  positions      positions[]
+}
+
+model countries {
+  counname       String           @id @db.VarChar(100)
+  cities         cities[]
+  citizenshipreq citizenshipreq[]
+  located_in     located_in[]
+}
+
+model experiencereq {
+  reqid      Int     @id
+  sname      String? @db.VarChar(100)
+  licencereq String? @db.VarChar(100)
+  years      Int?
+}
+
+model industries {
+  indname        String           @id @db.VarChar(50)
+  associated_ind associated_ind[]
+}
+
+model located_in {
+  pid       Int
+  counname  String    @db.VarChar(100)
+  cityname  String    @db.VarChar(100)
+  countries countries @relation(fields: [counname], references: [counname], onDelete: NoAction, onUpdate: NoAction)
+  positions positions @relation(fields: [pid], references: [pid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([pid, counname, cityname])
+}
+
+model position_types {
+  ptype           String   @id @db.VarChar(50)
+  fixedlength     Boolean?
+  aimedatstudents Boolean?
+}
+
+model positions {
+  pid        Int          @id
+  url        String?      @db.VarChar(1000)
+  desc       String?
+  title      String?      @db.VarChar(50)
+  expiry     DateTime?    @db.Date
+  comid      Int
+  ptype      String       @db.VarChar(50)
+  companies  companies    @relation(fields: [comid], references: [comid], onDelete: NoAction, onUpdate: NoAction)
+  located_in located_in[]
+  requires   requires[]
+}
+
+model requirements {
+  reqid          Int        @id
+  strict         Boolean?
+  citizenreqflag Boolean?
+  expreqflag     Boolean?
+  requires       requires[]
+}
+
+model requires {
+  pid          Int
+  reqid        Int
+  positions    positions    @relation(fields: [pid], references: [pid], onDelete: NoAction, onUpdate: NoAction)
+  requirements requirements @relation(fields: [reqid], references: [reqid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([pid, reqid])
+}
+
+model skills {
+  sname String  @id @db.VarChar(100)
+  sdesc String?
+}
