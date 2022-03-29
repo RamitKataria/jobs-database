@@ -18,8 +18,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { DataGrid } from '@mui/x-data-grid';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import TextField from '@mui/material/TextField';
-import Switch from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 /* Data for table*/
@@ -58,7 +56,7 @@ const App = () => {
     
     const handleAdminClick = () => {
         const AdminMode = document.getElementById("AdminMode");
-        if(AdminMode.style.display=="block"){
+        if(AdminMode.style.display==="block"){
             AdminMode.style.display = "none";
         }else{
             AdminMode.style.display = "block";
