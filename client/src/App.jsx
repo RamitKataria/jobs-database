@@ -53,7 +53,7 @@ const rows = [
 /* App component */
 
 const App = () => {
-    
+    /* handle buttonClicks */
     const handleAdminClick = () => {
         const AdminMode = document.getElementById("AdminMode");
         if(AdminMode.style.display==="block"){
@@ -92,6 +92,44 @@ const App = () => {
         InsertMode.style.display = "none";
         DeleteMode.style.display = "block";
     }
+
+
+    // get data from insert part textfield and save in insertData Object
+    const submitInsertDataClick =() =>{
+        /*const insertData = {
+            insertTitle: document.getElementById("insertTitle").value,
+            insertExpiry: document.getElementById("insertExpiry").value,
+            insertUrl: document.getElementById("insertUrl").value,
+            insertDesc: document.getElementById("insertDesc").value,
+            insertComID: document.getElementById("insertComID").value,
+            insertCountryName: document.getElementById("insertCountryName").value,
+            insertCityName: document.getElementById("insertCityName").value
+        };
+        console.log(insertData.insertTitle);
+        */
+    }
+
+    // get data from insert part textfield and save in updateData Object
+    const submitUpdateDataClick =() =>{
+        /*
+        const updateData = {
+            updatepID: document.getElementById("updatepID").value,
+            updateTitle: document.getElementById("updateTitle").value,
+            updateExpiry: document.getElementById("updateExpiry").value,
+            updateUrl: document.getElementById("updateUrl").value,
+            updateDesc: document.getElementById("updateDesc").value
+        };
+        */
+    }
+
+    const submitDeleteDataClick =() =>{
+        /*
+        const deleteData = {
+            deletepID: document.getElementById("deletepID").value
+        };
+        */
+    }
+
 
     return(
         <>
@@ -147,29 +185,42 @@ const App = () => {
                         <div id="InsertMode">
                             <Typography>Insert Data</Typography>
                             <Box component="form" sx={{ "& .MuiTextField-root": {m: 1, width: "25ch"}, }} noValidate autoComplete="off">
-                                <TextField required id="title" label="title" />
-                                <TextField required id="expiry" label="expiry date" />
-                                <TextField required id="url" label="URL" />
-                                <TextField required id="desc" label="description" />
-                                <Button color="inherit" onClick={handleAdminClick} align="right">Insert</Button>
+                                <TextField required id="insertTitle" label="Title Name" />
+                                <TextField required id="insertExpiry" label="Expiry Date" />
+                                <TextField required id="insertUrl" label="URL" />
+                                <TextField required id="insertDesc" label="Description" />
+                                <TextField required id="insertComID" label="Company ID" />
+                                <TextField required id="insertCountryName" label="Country Name" />
+                                <TextField required id="insertCityName" label="City Name" />  
+                                <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
+                                    <Button variant ="contained" disableElevation onClick={submitInsertDataClick} align="right">Insert</Button>
+                                </Box>
+                                    
+                                
+                                
                             </Box>
                         </div>
                         <div id="UpdateMode">
                             <Typography>Update Data</Typography>
                             <Box component="form" sx={{ "& .MuiTextField-root": {m: 1, width: "25ch"}, }} noValidate autoComplete="off">
-                                    <TextField required id="pID" label="pID" />
-                                    <TextField required id="title" label="title" />
-                                    <TextField required id="expiry" label="expiry date" />
-                                    <TextField required id="url" label="URL" />
-                                    <TextField required id="desc" label="description" />
-                                    <Button color="inherit" onClick={handleAdminClick} align="right">Update</Button>
+                                    <TextField required id="updatepID" label="Position ID" />
+                                    <TextField required id="updateTitle" label="Title Name" />
+                                    <TextField required id="updateExpiry" label="Expiry Date" />
+                                    <TextField required id="updateUrl" label="URL" />
+                                    <TextField required id="updateDesc" label="Description" />
+                                    <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
+                                        <Button variant ="contained" disableElevation onClick={submitUpdateDataClick} align="right">Update</Button>
+                                    </Box>
+                                    
                                 </Box>
                         </div>
                         <div id="DeleteMode">
                             <Typography>Delete data</Typography>
                             <Box component="form" sx={{ "& .MuiTextField-root": {m: 1, width: "25ch"}, }} noValidate autoComplete="off">
-                                <TextField required id="pID" label="pID" />
-                                <Button color="inherit" onClick={handleAdminClick} align="right">Delete</Button>
+                                <TextField id="deletepID" label="pID" />
+                                <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
+                                    <Button variant ="contained" disableElevation onClick={submitDeleteDataClick} align="right">Delete</Button>
+                                </Box>
                             </Box>
                         </div>
 
