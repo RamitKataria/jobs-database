@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-const pool = require('../config');
+const pool = require('../config').pool;
 
 function testAPI(req: Request, res: Response) {
     res.json({
