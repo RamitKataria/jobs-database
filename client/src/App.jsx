@@ -96,7 +96,7 @@ const App = () => {
 
     // get data from insert part textfield and save in insertData Object
     const submitInsertDataClick =() =>{
-        const insertData = {
+        /*const insertData = {
             insertTitle: document.getElementById("insertTitle").value,
             insertExpiry: document.getElementById("insertExpiry").value,
             insertUrl: document.getElementById("insertUrl").value,
@@ -106,11 +106,12 @@ const App = () => {
             insertCityName: document.getElementById("insertCityName").value
         };
         console.log(insertData.insertTitle);
-
+        */
     }
 
     // get data from insert part textfield and save in updateData Object
     const submitUpdateDataClick =() =>{
+        /*
         const updateData = {
             updatepID: document.getElementById("updatepID").value,
             updateTitle: document.getElementById("updateTitle").value,
@@ -118,14 +119,15 @@ const App = () => {
             updateUrl: document.getElementById("updateUrl").value,
             updateDesc: document.getElementById("updateDesc").value
         };
-        
+        */
     }
 
     const submitDeleteDataClick =() =>{
+        /*
         const deleteData = {
             deletepID: document.getElementById("deletepID").value
         };
-
+        */
     }
 
 
