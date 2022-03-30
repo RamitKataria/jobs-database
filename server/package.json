@@ -8,7 +8,8 @@
     "start": "node dist/index.js",
     "build": "tsc",
     "postinstall": "npm run build",
-    "deploy-to-heroku": "cd .. && git subtree push --prefix server heroku main"
+    "deploy-to-heroku": "cd .. && git subtree push --prefix server heroku main",
+    "connect-db": "heroku pg:psql postgresql-fluffy-76405 --app jobsdata"
   },
   "author": "",
   "license": "ISC",
