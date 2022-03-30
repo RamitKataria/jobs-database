@@ -21,7 +21,7 @@ const limiter = rateLimit({
   max: 5, // 5 requests,
 })
 
-app.use(cors(origin)); // Enable CORS
+app.use(cors()); // app.use(cors(origin)); // Enable CORS
 app.use(express.json()); // Recognize Request Objects as JSON objects
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
