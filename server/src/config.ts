@@ -1,12 +1,19 @@
 // const fetch = require('node-fetch'); // import node-fetch (enables the fetch API to be used server-side)
-const { Pool } = require('pg') // import node-postgres
+const { Client } = require('pg') // import node-postgres
 
 const isProduction = process.env.NODE_ENV === 'production';
-const connectionString = process.env.DATABASE_URL;
+if (!isProduction) {
+     require('dotenv').config();
+    console.log('DATABASE_URL: ' + process.env.DATABASE_URL);
+}
 
-const pool = new Pool({
-    connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
-    ssl: isProduction,
-})
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
 
-module.exports = { pool, isProduction };
+client.connect();
+
+module.exports = { client, isProduction };
