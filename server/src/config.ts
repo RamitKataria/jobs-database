@@ -3,7 +3,7 @@ const { Client } = require('pg') // import node-postgres
 
 const isProduction = process.env.NODE_ENV === 'production';
 if (!isProduction) {
-     require('dotenv').config();
+    require('dotenv').config({ path: '.env.local' });
     console.log('DATABASE_URL: ' + process.env.DATABASE_URL);
 }
 
