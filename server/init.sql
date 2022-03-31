@@ -115,10 +115,13 @@ CREATE TABLE Requires (
 
 INSERT INTO Positions (pID, url, description, title, expiry, comID, pType)
 VALUE (1, 'www.ITconsultant123.com', 'IT consulting description goes here. ', 'IT Consultant', 2025-05-01, 1, 'Permanent Full-time'),
-      (2, 'www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach Database management.','CS304 Professor', 2022-05-01, 2, 'Contract Full-time'),
+      (2, 'www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach Database management.','CS304 Professor', 2022-05-01, 2, 'Permanent Full-time'),
       (3, 'www.redrobinsjobs.com', 'Floor staff, wanted for 15:00~19:00','Floor Staff', 2020-12-31, 3, 'Permanent Part-time'),
       (4, 'www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach introduction of computer science.','CS110 Professor', 2023-01-01, 2, 'Contract Full-time'),
-      (5, 'www.lululemonjobs.com', 'Become the designer of lululemon for upcoming apparel project','Apparel Designer', 2022-07-04, 5, 'Contract Full-time');
+      (5, 'www.lululemonjobs.com', 'Become the designer of lululemon for upcoming apparel project','Apparel Designer', 2022-07-04, 5, 'Contract Full-time'),
+      (6, 'www.ubcprofjobs.com', 'TA for cs304', 'CS304 TA', 2021-11-11, 2, 'Contract Part-time'),
+      (7, 'www.ubcprofjobs.com', 'Cleaner of CS Xwing', 'Cleaner', 2023-12-12, 'Permanent Part-time'),
+      (8, 'www.ubcprofjobs.com', 'Internship opportunity for graduate student', 'Internship Opportunity at UBC', 2022-12-31, 'Internship');
 
 INSERT INTO Companies (comID, comName, nEmpl)
 VALUE (1, 'Accenture', 699000),
