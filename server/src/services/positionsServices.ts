@@ -10,8 +10,10 @@ async function querySwitchPositions(req: Request, res: Response) {
         return await selectionQueryPositions(req, res);
       case "join":
         return await joinQueryPositions(req, res);
-      case "aggregation":
+      case "aggregation_positions_count":
         return await aggregationQueryPositions(req, res);
+      case "aggregation_positions_count_groupby":
+        return await aggregationQueryPositionsGroupBy(req, res);
       case "division":
         return await divisionQueryPositions(req, res);
       default:
@@ -134,7 +136,7 @@ async function insertRowPositions(req: Request, res: Response) {
   }
 }
 
-async function aggregationQueryPositions(req: Request, res: Response){
+async function aggregationQueryPositionsGroupBy(req: Request, res: Response){
   try{
     const getQuery2: object | null = await prisma.located_in.groupBy({
       by: ['cityname'],
@@ -159,6 +161,32 @@ async function aggregationQueryPositions(req: Request, res: Response){
     res.status(400).json({err: e});
   }
 }
+
+async function aggregationQueryPositions(req: Request, res: Response){
+  try{
+    const getQuery2: object | null = await prisma.located_in.aggregate({
+      where: {
+        positions: {
+          expiry: {
+            gt: new Date()
+          }
+        }
+      },
+      _count: {
+        pid: true
+      }
+    })
+    if(getQuery2 === null) {
+      res.status(404).json(getQuery2);
+    } else{
+      res.status(200).json(getQuery2);
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({err: e});
+  }
+}
+
 async function divisionQueryPositions(req: Request, res: Response) {
   try{
     const getAllPositionTypes: any = await prisma.position_types.findMany({
