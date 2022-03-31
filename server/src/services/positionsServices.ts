@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-const prisma = require('../config');
+const { prisma } = require('../config');
 
 async function querySwitchPositions(req: Request, res: Response) {
   try {
