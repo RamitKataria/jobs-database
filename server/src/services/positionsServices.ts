@@ -222,7 +222,6 @@ async function divisionQueryPositions(req: Request, res: Response) {
     res.status(400).json({err: e});
   }
 }
-=======
 
 const { client } = require('../config');
 
