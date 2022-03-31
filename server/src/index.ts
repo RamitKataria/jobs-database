@@ -7,6 +7,9 @@ const rateLimit = require('express-rate-limit')
 const { body, check } = require('express-validator')
 
 const positionsServices = require('./services/positionsServices');
+const citiesServices = require('./services/citiesServices');
+const countriesServices = require('./services/countriesServices');
+
 
 const PORT = process.env.PORT || 5001; // use either the host env var port (PORT) provided by Heroku or the local port (5000) on your machine
 const isProduction = require('./config').isProduction;
@@ -38,11 +41,12 @@ app.route('/api/positions')
     .delete(positionsServices.deleteRowPositions);
 
 app.route('/api/cities')
-    .get();
+    .get(citiesServices.projectionQueryCities)
+    .delete(citiesServices.deleteRowCities);
 
-app.route('api/countries/')
-    .get()
-    .delete();
+// app.route('api/countries/')
+//     .get(countriesServices.projectionQueryCountries)
+//     .delete();
 
 app.listen(PORT, () => { // start server and listen on specified port
   console.log(`App is running on ${PORT}`) // confirm server is running and log port to the console

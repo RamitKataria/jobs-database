@@ -129,19 +129,24 @@ async function insertRowPositions(req: Request, res: Response) {
     });
     res.status(200).json({status: "OK"});
   } catch (e) {
+    console.log(e);
     res.status(400).json({err: e});
   }
 }
 
 async function aggregationQueryPositions(req: Request, res: Response){
   try{
-    const getQuery2: object | null = await prisma.positions.aggregate({
+    const getQuery2: object | null = await prisma.located_in.groupBy({
+      by: ['cityname'],
+      where: {
+        positions: {
+          expiry: {
+            gt: new Date()
+          }
+        }
+      },
       _count: {
         pid: true
-      }, where: {
-        expiry: {
-          gt: new Date()
-        }
       }
     })
     if(getQuery2 === null) {
@@ -150,6 +155,7 @@ async function aggregationQueryPositions(req: Request, res: Response){
       res.status(200).json(getQuery2);
     }
   } catch (e) {
+    console.log(e);
     res.status(400).json({err: e});
   }
 }
