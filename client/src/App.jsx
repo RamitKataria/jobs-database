@@ -13,16 +13,26 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Container from '@mui/material/Container';
 import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import TextField from '@mui/material/TextField';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import Grid from '@mui/material/Grid';
 import { TableCell, TableContainer, TableHead, TableRow, Paper, Table, TableBody } from "@mui/material";
+import { styled } from '@mui/material/styles';
 
 
 import DataTable from "./data/sampleData.json";
 
+var numPositions = 0;
+
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
 /* App component */
 
 const App = () => {
@@ -66,41 +76,61 @@ const App = () => {
         DeleteMode.style.display = "block";
     }
 
+    let insertData = {
+        insertTitle: null,
+        insertExpiry: null,
+        insertURL: null,
+        insertDesc: null,
+        insertComID: null,
+        insertCountryName: null,
+        insertCityName: null
+    };
+
+    let updateData = {
+        updatepID: null,
+        updateTitile: null,
+        updateExpiry: null,
+        updateURL: null,
+        updateDesc: null
+    };
+
+    let deleteData = {
+        deletepID: null
+    };
+
+    let deleteCasData = {
+        deleteCountry: null
+    };
 
     // get data from insert part textfield and save in insertData Object
+    //Do not forget to update numPositions
     const submitInsertDataClick =() =>{
-        /*const insertData = {
-            insertTitle: document.getElementById("insertTitle").value,
-            insertExpiry: document.getElementById("insertExpiry").value,
-            insertUrl: document.getElementById("insertUrl").value,
-            insertDesc: document.getElementById("insertDesc").value,
-            insertComID: document.getElementById("insertComID").value,
-            insertCountryName: document.getElementById("insertCountryName").value,
-            insertCityName: document.getElementById("insertCityName").value
-        };
-        console.log(insertData.insertTitle);
-        */
+        insertData.insertTitle = document.getElementById("insertTitle").value;
+        insertData.insertExpiry = document.getElementById("insertExpiry").value;
+        insertData.insertURL = document.getElementById("insertUrl").value;
+        insertData.insertDesc = document.getElementById("insertDesc").value;
+        insertData.insertComID = document.getElementById("insertComID").value;
+        insertData.insertCountryName = document.getElementById("insertCountryName").value;
+        insertData.insertCityName = document.getElementById("insertCityName").value;
+        /*console.log(insertData.insertTitle);*/
     }
 
     // get data from insert part textfield and save in updateData Object
     const submitUpdateDataClick =() =>{
-        /*
-        const updateData = {
-            updatepID: document.getElementById("updatepID").value,
-            updateTitle: document.getElementById("updateTitle").value,
-            updateExpiry: document.getElementById("updateExpiry").value,
-            updateUrl: document.getElementById("updateUrl").value,
-            updateDesc: document.getElementById("updateDesc").value
-        };
-        */
+        updateData.updatepID = document.getElementById("updatepID").value;
+        updateData.updateTitle = document.getElementById("updateTitle").value;
+        updateData.updateExpiry = document.getElementById("updateExpiry").value;
+        updateData.updateURL = document.getElementById("updateUrl").value;
+        updateData.updateDesc = document.getElementById("updateDesc").value;
     }
 
+    //Do not forget to update numPositions
     const submitDeleteDataClick =() =>{
-        /*
-        const deleteData = {
-            deletepID: document.getElementById("deletepID").value
-        };
-        */
+        deleteData.deletepID = document.getElementById("deletepID").value;
+    }
+
+    const submitDeleteCasDataClick =() =>{
+        deleteCasData.deleteCountry = document.getElementById("deleteCountry").value;
     }
 
 
@@ -115,8 +145,8 @@ const App = () => {
     let filterChecker = {
         ShowExpiredJobs: true,
         ShowURL: false,
-        ShowPositionType: false,
-        ShowRequiredID: false
+        ShowExpiryDate: false,
+        ShowCompany: false
     };
 
     /* on click handler of checkbox in filter section */
@@ -126,17 +156,25 @@ const App = () => {
 
     const filterURLCheck =() =>{
         filterChecker.ShowURL = !filterChecker.ShowURL;
-        console.log(filterChecker.ShowURL);
     }
 
-    const filterPTCheck =() =>{
-        filterChecker.ShowPositionType = !filterChecker.ShowPositionType;
+    const filterExpDateCheck =() =>{
+        filterChecker.ShowExpiryDate = !filterChecker.ShowExpiryDate;
     }
 
-    const filterRICheck =() => {
-        filterChecker.ShowRequiredID = !filterChecker.ShowRequiredID;
+    const filterComCheck =() => {
+        filterChecker.ShowCompany = !filterChecker.ShowCompany;
     }
 
+    // Do action of nested aggregation query
+    const handleNestedAggregationCheck =() => {
+
+    }
+
+    // Do action of division query
+    const handleDivisionCheck =() => {
+
+    }
 
     return(
         <>
@@ -164,15 +202,54 @@ const App = () => {
                         <Typography>Filter</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Selection Query <br /></Typography>
+                                        <FormControlLabel control={<Checkbox defaultChecked/>} label="Show Expired Jobs" onClick={filterExpCheck} />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Projection Query <br /></Typography>       
+                                    <FormControlLabel control={<Checkbox />} label="Show URL" onClick={filterURLCheck} />
+                                    <FormControlLabel control={<Checkbox />} label="Show Expiry Date" onClick={filterExpDateCheck} />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Join Query</Typography>
+                                <FormControlLabel control={<Checkbox />} label="Show Company" onClick={filterComCheck} />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Nested Aggregation Query</Typography>
+                                <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
+                                            <Button variant ="outlined" disableElevation onClick={handleNestedAggregationCheck} align="right">Number of Position By City</Button>
+                                </Box>    
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Division</Typography>
+                                <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
+                                            <Button variant ="outlined" disableElevation onClick={handleDivisionCheck} align="right">Number of Position By City</Button>
+                                </Box>    
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Total Position available</Typography>
+                                <Typography variant="h5">
+                                    {numPositions}
+                                </Typography>
+                            </Item>
+                        </Grid>
+                    </Grid>
+
                     <Container maxWidth="md">
-                                        <Typography variant="h6">Selection Query <br /></Typography>
-                                            <FormGroup>
-                                                <FormControlLabel control={<Checkbox defaultChecked/>} label="Show Expired Jobs" onClick={filterExpCheck} />
-                                            </FormGroup>                      
-                                        <Typography variant="h6">Projection Query <br /></Typography>                  
-                                                    <FormControlLabel control={<Checkbox />} label="URL" onClick={filterURLCheck} />
-                                                    <FormControlLabel control={<Checkbox />} label="Position Type" onClick={filterPTCheck} />
-                                                    <FormControlLabel control={<Checkbox />} label="Requirement ID" onClick={filterRICheck} />  
+                                                          
                                         <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
                                             <Button variant ="contained" disableElevation onClick={tryingToFetch} align="right">Search</Button>
                                         </Box>           
@@ -227,6 +304,14 @@ const App = () => {
                                 <TextField id="deletepID" label="pID" />
                                 <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
                                     <Button variant ="contained" disableElevation onClick={submitDeleteDataClick} align="right">Delete</Button>
+                                </Box>
+                            </Box>
+
+                            <Typography> Delete-Cascade</Typography>
+                            <Box component="form" sx={{ "& .MuiTextField-root": {m: 1, width: "25ch"}, }} noValidate autoComplete="off">
+                                <TextField id="deleteCountry" label="Country" />
+                                <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
+                                    <Button variant ="contained" disableElevation onClick={submitDeleteCasDataClick} align="right">Delete</Button>
                                 </Box>
                             </Box>
                         </div>
