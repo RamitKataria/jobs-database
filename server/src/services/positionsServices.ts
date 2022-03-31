@@ -10,8 +10,8 @@ async function querySwitchPositions(req: Request, res: Response) {
         return await projectionQueryPositions(req, res);
       case "selection":
         return await selectionQueryPositions(req, res);
-      // case "join":
-      //   return await joinQueryPositions(req, res);
+      case "join":
+        return await joinQueryPositions(req, res);
       case "aggregation":
         return await aggregationQueryPositions(req, res);
       case "division":
@@ -66,7 +66,6 @@ async function selectionQueryPositions(req: Request, res: Response) {
   try{
     const fields = req.body.fields;
     let date = new Date();
-    const selectOptions = selectFieldOptionsPositions(fields);
     const getQuery: object | null = await prisma.positions.findMany({
       where: {
         expiry: {
@@ -81,37 +80,39 @@ async function selectionQueryPositions(req: Request, res: Response) {
       res.status(200).json(getQuery);
     }
   } catch (e) {
+    console.log(e);
     res.status(400).json({err: e});
   }
 }
 
-// async findJobs(): Promise<object | null>{
-//     const getQuery: object | null = await this.prisma.requires.findMany({
-//         where: {
-//             positions: {
-//                 expiry: {
-//                     gt: new Date()
-//                 }
-//             }
-//         },
-//         select: {
-//             reqid: true,
-//             positions: {
-//                 select: {
-//                     url: true
-//                 }
-//             }
-//         },
-//     })
-//     return getQuery;
-
-// async function joinQueryPositions(req: Request, res: Response): Promise <object | null> {
-//   try{
-//
-//   } catch (e) {
-//     res.status(400).json({err: e});
-//   }
-// }
+async function joinQueryPositions(req: Request, res: Response) {
+  try{
+    const getQuery: object | null = await prisma.positions.findMany({
+      where: {
+        expiry: {
+          gt: new Date()
+        }
+      },
+      select: {
+        pid: true,
+        url: true,
+        title: true,
+        companies: {
+          select: {
+            comname: true
+          }
+        }
+      }
+    });
+    if(getQuery === null) {
+      res.status(400).json(getQuery);
+    } else {
+      res.status(200).json(getQuery);
+    }
+  } catch (e) {
+    res.status(400).json({err: e});
+  }
+}
 
 async function insertRowPositions(req: Request, res: Response) {
   try{
@@ -223,6 +224,37 @@ async function divisionQueryPositions(req: Request, res: Response) {
   }
 }
 
+async function updateRowPositions(req: Request, res: Response) {
+  try{
+    const reqData = req.body;
+
+    await prisma.positions.update({
+      where:{
+        pid: reqData.pid
+      },
+      data: reqData.fields
+    });
+    res.status(200).json({status: "OK"});
+  } catch (e) {
+    res.status(400).json({err: e});
+  }
+}
+
+async function deleteRowPositions(req: Request, res: Response) {
+  try{
+    const reqData = req.body;
+
+    await prisma.positions.delete({
+      where: {
+        pid: reqData.pid
+      }
+    });
+    res.status(200).json({status: "OK"});
+  } catch (e) {
+    res.status(400).json({err: e});
+  }
+}
+
 const { client } = require('../config');
 
 function testAPI(req: Request, res: Response) {
@@ -231,21 +263,22 @@ function testAPI(req: Request, res: Response) {
     });
 }
 
-async function getPositions(req: Request, res: Response) {
-    const qText = 'SELECT * FROM Positions;';
+// async function getPositions(req: Request, res: Response) {
+//     const qText = 'SELECT * FROM Positions;';
+//
+//     try {
+//         const dbResponse = await client.query(qText);
+//         console.log(dbResponse);
+//         if ('rows' in dbResponse) {
+//             for (let row of dbResponse.rows) {
+//                 console.log(JSON.stringify(row));
+//             }
+//             res.status(200).json(dbResponse.rows);
+//         }
+//     } catch (err: unknown) {
+//         console.log(err);
+//     }
+// }
 
-    try {
-        const dbResponse = await client.query(qText);
-        console.log(dbResponse);
-        if ('rows' in dbResponse) {
-            for (let row of dbResponse.rows) {
-                console.log(JSON.stringify(row));
-            }
-            res.status(200).json(dbResponse.rows);
-        }
-    } catch (err: unknown) {
-        console.log(err);
-    }
-}
-
-export {testAPI, getPositions, insertRowPositions, querySwitchPositions};
+// export {testAPI, getPositions, insertRowPositions, querySwitchPositions};
+export {testAPI, insertRowPositions, updateRowPositions, deleteRowPositions, querySwitchPositions};
