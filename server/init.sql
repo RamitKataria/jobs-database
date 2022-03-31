@@ -114,10 +114,10 @@ CREATE TABLE Requires (
     );
 
 INSERT INTO Positions (url, description, title, expiry, comID, pType)
-VALUES ('www.ITconsultant123.com', 'IT consulting description goes here. ', 'IT Consultant', '2025-05-01, 1', 'Permanent Full-time'),
+VALUES ('www.ITconsultant123.com', 'IT consulting description goes here. ', 'IT Consultant', '2025-05-01', 1, 'Permanent Full-time'),
       ('www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach Database management.','CS304 Professor', '2022-05-01', 2, 'Permanent Full-time'),
       ('www.redrobinsjobs.com', 'Floor staff, wanted for 15:00~19:00','Floor Staff', '2020-12-31', 3, 'Permanent Part-time'),
-      ('www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach introduction of computer science.','CS110 Professor', '2023-01-01, 2', 'Contract Full-time'),
+      ('www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach introduction of computer science.','CS110 Professor', '2023-01-01', 2, 'Contract Full-time'),
       ('www.lululemonjobs.com', 'Become the designer of lululemon for upcoming apparel project','Apparel Designer', '2022-07-04', 5, 'Contract Full-time'),
       ('www.ubcprofjobs.com', 'TA for cs304', 'CS304 TA', '2021-11-11', 2, 'Contract Part-time'),
       ('www.ubcprofjobs.com', 'Cleaner of CS Xwing', 'Cleaner', '2023-12-12', 2, 'Permanent Part-time'),
@@ -159,21 +159,21 @@ VALUES ('Los Angeles', 'United States', 'California'),
       ('Toronto', 'Canada', 'Ontario'),
       ('London', 'United Kingdom', 'London');
 
-INSERT INTO Requirements (reqID, strict, citizenReqFlag, expReqFlag)
+INSERT INTO Requirements (strict, citizenReqFlag, expReqFlag)
 VALUES (true, true, false),
       (true, true, false),
       (false, true, false),
       (true, false, true),
       (false, false, true);
 
-INSERT INTO CitizenshipReq (reqID, statusReq, counName)
+INSERT INTO CitizenshipReq (statusReq, counName)
 VALUES ('Citizen', 'United States'),
       ('Permanent Residence', 'United Kingdom'),
       ('Citizen', 'Canada'),
       ('Citizen', 'China'),
       ('Permanent Residence', 'China');
 
-INSERT INTO Experience_Req (reqID, licenceReq, years, sName)
+INSERT INTO Experience_Req (licenceReq, years, sName)
 VALUES ('Class 5 Driving', 10, 'Driving'),
       ('CPA', 5, 'Accounting'),
       (NULL, 3, 'C++'),
