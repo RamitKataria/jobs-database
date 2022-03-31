@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:socoolman@localhost:5432/postgres?schema=jobs-database-schema"
+  url      = env("DATABASE_URL") + '?sslmode=require'
 }
 
 model associated_ind {
