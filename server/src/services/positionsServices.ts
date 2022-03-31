@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 const { prisma } = require('../config');
 
 async function querySwitchPositions(req: Request, res: Response) {
-  try {
+  if (req.body.queryType) {
     switch (req.body.queryType) {
       case "projection":
         return await projectionQueryPositions(req, res);
@@ -18,6 +18,20 @@ async function querySwitchPositions(req: Request, res: Response) {
         return await divisionQueryPositions(req, res);
       default:
         res.status(404).json({err: "Not found"});
+    }
+  } else {
+    return await selectAllFields(req, res);
+  }
+
+}
+
+async function selectAllFields(req: Request, res: Response) {
+  try {
+    const getQuery: object | null = await prisma.positions.findMany();
+    if(getQuery === null) {
+      res.status(400).json(getQuery);
+    } else {
+      res.status(200).json(getQuery);
     }
   } catch (e) {
     res.status(400).json({err: e});
