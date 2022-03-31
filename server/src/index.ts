@@ -44,9 +44,9 @@ app.route('/api/cities')
     .get(citiesServices.projectionQueryCities)
     .delete(citiesServices.deleteRowCities);
 
-// app.route('api/countries/')
-//     .get(countriesServices.projectionQueryCountries)
-//     .delete();
+app.route('/api/countries')
+    .get(countriesServices.projectionQueryCountries)
+    .delete(countriesServices.deleteRowCountries);
 
 app.listen(PORT, () => { // start server and listen on specified port
   console.log(`App is running on ${PORT}`) // confirm server is running and log port to the console

@@ -4,7 +4,7 @@ const {prisma} = require('../config');
 
 async function projectionQueryCountries(req: Request, res: Response) {
     try{
-        const getQuery: object | null = await prisma.cities.findMany({
+        const getQuery: object | null = await prisma.countries.findMany({
             select: {
                 counname: true
             }
@@ -24,7 +24,7 @@ async function deleteRowCountries(req: Request, res: Response) {
     try{
         const reqData = req.body;
 
-        await prisma.positions.delete({
+        await prisma.countries.delete({
             where: {
                 counname: reqData.counname
             }
