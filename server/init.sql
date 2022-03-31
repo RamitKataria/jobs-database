@@ -89,12 +89,12 @@ CREATE TABLE Requirements (  -- delete cascade
 
 DROP TABLE Experience_Req CASCADE;
 CREATE TABLE Experience_Req (
-	reqID SERIAL,
-	sName VARCHAR(100),
-	licenceReq VARCHAR(100),
-    years INTEGER,
-    PRIMARY KEY (reqID),
-    FOREIGN KEY (sName) REFERENCES Skills
+	    reqID SERIAL,
+	    sName VARCHAR(100),
+	    licenceReq VARCHAR(100),
+        years INTEGER,
+        PRIMARY KEY (reqID),
+        FOREIGN KEY (sName) REFERENCES Skills
     );
 
 DROP TABLE Skills CASCADE;
@@ -113,25 +113,25 @@ CREATE TABLE Requires (
 	    FOREIGN KEY (reqID) REFERENCES Requirements
     );
 
-INSERT INTO Positions (pID, url, description, title, expiry, comID, pType)
-VALUES (1, 'www.ITconsultant123.com', 'IT consulting description goes here. ', 'IT Consultant', 2025-05-01, 1, 'Permanent Full-time'),
-      (2, 'www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach Database management.','CS304 Professor', 2022-05-01, 2, 'Permanent Full-time'),
-      (3, 'www.redrobinsjobs.com', 'Floor staff, wanted for 15:00~19:00','Floor Staff', 2020-12-31, 3, 'Permanent Part-time'),
-      (4, 'www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach introduction of computer science.','CS110 Professor', 2023-01-01, 2, 'Contract Full-time'),
-      (5, 'www.lululemonjobs.com', 'Become the designer of lululemon for upcoming apparel project','Apparel Designer', 2022-07-04, 5, 'Contract Full-time'),
-      (6, 'www.ubcprofjobs.com', 'TA for cs304', 'CS304 TA', 2021-11-11, 2, 'Contract Part-time'),
-      (7, 'www.ubcprofjobs.com', 'Cleaner of CS Xwing', 'Cleaner', 2023-12-12, 'Permanent Part-time'),
-      (8, 'www.ubcprofjobs.com', 'Internship opportunity for graduate student', 'Internship Opportunity at UBC', 2022-12-31, 'Internship');
+INSERT INTO Positions (url, description, title, expiry, comID, pType)
+VALUES ('www.ITconsultant123.com', 'IT consulting description goes here. ', 'IT Consultant', '2025-05-01, 1', 'Permanent Full-time'),
+      ('www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach Database management.','CS304 Professor', '2022-05-01', 2, 'Permanent Full-time'),
+      ('www.redrobinsjobs.com', 'Floor staff, wanted for 15:00~19:00','Floor Staff', '2020-12-31', 3, 'Permanent Part-time'),
+      ('www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach introduction of computer science.','CS110 Professor', '2023-01-01, 2', 'Contract Full-time'),
+      ('www.lululemonjobs.com', 'Become the designer of lululemon for upcoming apparel project','Apparel Designer', '2022-07-04', 5, 'Contract Full-time'),
+      ('www.ubcprofjobs.com', 'TA for cs304', 'CS304 TA', '2021-11-11', 2, 'Contract Part-time'),
+      ('www.ubcprofjobs.com', 'Cleaner of CS Xwing', 'Cleaner', '2023-12-12', 2, 'Permanent Part-time'),
+      ('www.ubcprofjobs.com', 'Internship opportunity for graduate student', 'Internship Opportunity at UBC', '2022-12-31', 2, 'Internship');
 
-INSERT INTO Companies (comID, comName, nEmpl)
-VALUES (1, 'Accenture', 699000),
-      (2, 'University of British Columbia', 6000),
-      (3, 'Red Robins', 10000)
-      (4, 'Thirsty', 5000),
-      (5, 'Lululemon', 25000);
+INSERT INTO Companies (comName, nEmpl)
+VALUES ('Accenture', 699000),
+      ('University of British Columbia', 6000),
+      ('Red Robins', 10000),
+      ('Thirsty', 5000),
+      ('Lululemon', 25000);
 
 
-INSERT INTO Position_Types (pType, fiexedLength, aimedAtStudents)
+INSERT INTO Position_Types (pType, fixedLength, aimedAtStudents)
 VALUES ('Contract Full-time', true, false),
       ('Permanent Full-time', false, false),
       ('Contract Part-time', true, false),
@@ -152,7 +152,7 @@ VALUES ('United States'),
       ('France'),
       ('China');
 
-INSERT INTO Cities (cityName, counName, state)
+INSERT INTO Cities (cityName, counName, stateName)
 VALUES ('Los Angeles', 'United States', 'California'),
       ('Vancouver', 'Canada', 'British Columbia'),
       ('New York', 'United States', 'New York'),
@@ -160,25 +160,25 @@ VALUES ('Los Angeles', 'United States', 'California'),
       ('London', 'United Kingdom', 'London');
 
 INSERT INTO Requirements (reqID, strict, citizenReqFlag, expReqFlag)
-VALUES (1, true, true, false),
-      (2, true, true, false),
-      (3, false, true, false),
-      (6, true, false, true),
-      (7, false, false, true);
+VALUES (true, true, false),
+      (true, true, false),
+      (false, true, false),
+      (true, false, true),
+      (false, false, true);
 
-INSERT INTO Citizenship_Req (reqID, statusReq, counName)
-VALUES (1, 'Citizen', 'United States'),
-      (2, 'Permanent Residence', 'United Kingdom'),
-      (3, 'Citizen', 'Canada'),
-      (4, 'Citizen', 'China'),
-      (5, 'Permanent Residence', 'China');
+INSERT INTO CitizenshipReq (reqID, statusReq, counName)
+VALUES ('Citizen', 'United States'),
+      ('Permanent Residence', 'United Kingdom'),
+      ('Citizen', 'Canada'),
+      ('Citizen', 'China'),
+      ('Permanent Residence', 'China');
 
-INSERT INTO Experience_Req (reqID, license_req, years, sName)
-VALUES (6, 'Class 5 Driving', 10, 'Driving'),
-      (7, 'CPA', 5, 'Accounting'),
-      (8, NULL, 3, 'C++'),
-      (9, NULL, 4, 'Java'),
-      (10, NULL, 2, 'Python');
+INSERT INTO Experience_Req (reqID, licenceReq, years, sName)
+VALUES ('Class 5 Driving', 10, 'Driving'),
+      ('CPA', 5, 'Accounting'),
+      (NULL, 3, 'C++'),
+      (NULL, 4, 'Java'),
+      (NULL, 2, 'Python');
 
 INSERT INTO Skills (sName, sDesc)
 VALUES ('Driving', 'Driving license, eligibility to drive a car'),
