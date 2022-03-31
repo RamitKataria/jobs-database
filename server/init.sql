@@ -148,7 +148,7 @@ VALUES ('Education'),
 INSERT INTO Countries (counName)
 VALUES ('United States'),
       ('Canada'),
-      ('United Kindgom'),
+      ('United Kingdom'),
       ('France'),
       ('China');
 
@@ -163,8 +163,13 @@ INSERT INTO Requirements (reqID, strict, citizenReqFlag, expReqFlag)
 VALUES (1,true, true, false),
       (2, true, true, false),
       (3, false, true, false),
+      (4, true, true, false),
+      (5, false, true, false),
       (6, true, false, true),
-      (7, false, false, true);
+      (7, false, false, true),
+      (8, true, false, true),
+      (9, true, false, true),
+      (10, false, false, true);
 
 INSERT INTO Citizenship_Req (reqID, statusReq, counName)
 VALUES (1, 'Citizen', 'United States'),
@@ -173,7 +178,7 @@ VALUES (1, 'Citizen', 'United States'),
       (4, 'Citizen', 'China'),
       (5, 'Permanent Residence', 'China');
 
-INSERT INTO Experience_Req (licenceReq, years, sName)
+INSERT INTO Experience_Req (reqID, licenceReq, years, sName)
 VALUES (6, 'Class 5 Driving', 10, 'Driving'),
       (7, 'CPA', 5, 'Accounting'),
       (8, NULL, 3, 'C++'),
