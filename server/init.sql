@@ -69,9 +69,9 @@ CREATE TABLE Countries (
         PRIMARY KEY (counName)
     );
 
-DROP TABLE CitizenshipReq CASCADE;
-CREATE TABLE CitizenshipReq (
-        reqID SERIAL,
+DROP TABLE Citizenship_Req CASCADE;
+CREATE TABLE Citizenship_Req (
+        reqID INTEGER,
         statusReq VARCHAR(100),
         counName VARCHAR(100) NOT NULL,
         PRIMARY KEY (reqID),
@@ -89,7 +89,7 @@ CREATE TABLE Requirements (  -- delete cascade
 
 DROP TABLE Experience_Req CASCADE;
 CREATE TABLE Experience_Req (
-	    reqID SERIAL,
+	    reqID INTEGER,
 	    sName VARCHAR(100),
 	    licenceReq VARCHAR(100),
         years INTEGER,
@@ -166,7 +166,7 @@ VALUES (true, true, false),
       (true, false, true),
       (false, false, true);
 
-INSERT INTO CitizenshipReq (statusReq, counName)
+INSERT INTO Citizenship_Req (statusReq, counName)
 VALUES ('Citizen', 'United States'),
       ('Permanent Residence', 'United Kingdom'),
       ('Citizen', 'Canada'),
