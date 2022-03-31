@@ -80,7 +80,7 @@ CREATE TABLE Citizenship_Req (
 
 DROP TABLE Requirements CASCADE;
 CREATE TABLE Requirements (  -- delete cascade
-        reqID SERIAL,
+        reqID INTEGER,
         strict BOOLEAN,
         citizenReqFlag BOOLEAN,
         expReqFlag BOOLEAN,
@@ -159,26 +159,26 @@ VALUES ('Los Angeles', 'United States', 'California'),
       ('Toronto', 'Canada', 'Ontario'),
       ('London', 'United Kingdom', 'London');
 
-INSERT INTO Requirements (strict, citizenReqFlag, expReqFlag)
-VALUES (true, true, false),
-      (true, true, false),
-      (false, true, false),
-      (true, false, true),
-      (false, false, true);
+INSERT INTO Requirements (reqID, strict, citizenReqFlag, expReqFlag)
+VALUES (1,true, true, false),
+      (2, true, true, false),
+      (3, false, true, false),
+      (6, true, false, true),
+      (7, false, false, true);
 
-INSERT INTO Citizenship_Req (statusReq, counName)
-VALUES ('Citizen', 'United States'),
-      ('Permanent Residence', 'United Kingdom'),
-      ('Citizen', 'Canada'),
-      ('Citizen', 'China'),
-      ('Permanent Residence', 'China');
+INSERT INTO Citizenship_Req (reqID, statusReq, counName)
+VALUES (1, 'Citizen', 'United States'),
+      (2, 'Permanent Residence', 'United Kingdom'),
+      (3, 'Citizen', 'Canada'),
+      (4, 'Citizen', 'China'),
+      (5, 'Permanent Residence', 'China');
 
 INSERT INTO Experience_Req (licenceReq, years, sName)
-VALUES ('Class 5 Driving', 10, 'Driving'),
-      ('CPA', 5, 'Accounting'),
-      (NULL, 3, 'C++'),
-      (NULL, 4, 'Java'),
-      (NULL, 2, 'Python');
+VALUES (6, 'Class 5 Driving', 10, 'Driving'),
+      (7, 'CPA', 5, 'Accounting'),
+      (8, NULL, 3, 'C++'),
+      (9, NULL, 4, 'Java'),
+      (10, NULL, 2, 'Python');
 
 INSERT INTO Skills (sName, sDesc)
 VALUES ('Driving', 'Driving license, eligibility to drive a car'),
