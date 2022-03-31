@@ -76,43 +76,61 @@ const App = () => {
         DeleteMode.style.display = "block";
     }
 
+    let insertData = {
+        insertTitle: null,
+        insertExpiry: null,
+        insertURL: null,
+        insertDesc: null,
+        insertComID: null,
+        insertCountryName: null,
+        insertCityName: null
+    };
+
+    let updateData = {
+        updatepID: null,
+        updateTitile: null,
+        updateExpiry: null,
+        updateURL: null,
+        updateDesc: null
+    };
+
+    let deleteData = {
+        deletepID: null
+    };
+
+    let deleteCasData = {
+        deleteCountry: null
+    };
 
     // get data from insert part textfield and save in insertData Object
     //Do not forget to update numPositions
     const submitInsertDataClick =() =>{
-        /*const insertData = {
-            insertTitle: document.getElementById("insertTitle").value,
-            insertExpiry: document.getElementById("insertExpiry").value,
-            insertUrl: document.getElementById("insertUrl").value,
-            insertDesc: document.getElementById("insertDesc").value,
-            insertComID: document.getElementById("insertComID").value,
-            insertCountryName: document.getElementById("insertCountryName").value,
-            insertCityName: document.getElementById("insertCityName").value
-        };
-        console.log(insertData.insertTitle);
-        */
+        insertData.insertTitle = document.getElementById("insertTitle").value;
+        insertData.insertExpiry = document.getElementById("insertExpiry").value;
+        insertData.insertURL = document.getElementById("insertUrl").value;
+        insertData.insertDesc = document.getElementById("insertDesc").value;
+        insertData.insertComID = document.getElementById("insertComID").value;
+        insertData.insertCountryName = document.getElementById("insertCountryName").value;
+        insertData.insertCityName = document.getElementById("insertCityName").value;
+        /*console.log(insertData.insertTitle);*/
     }
 
     // get data from insert part textfield and save in updateData Object
     const submitUpdateDataClick =() =>{
-        /*
-        const updateData = {
-            updatepID: document.getElementById("updatepID").value,
-            updateTitle: document.getElementById("updateTitle").value,
-            updateExpiry: document.getElementById("updateExpiry").value,
-            updateUrl: document.getElementById("updateUrl").value,
-            updateDesc: document.getElementById("updateDesc").value
-        };
-        */
+        updateData.updatepID = document.getElementById("updatepID").value;
+        updateData.updateTitle = document.getElementById("updateTitle").value;
+        updateData.updateExpiry = document.getElementById("updateExpiry").value;
+        updateData.updateURL = document.getElementById("updateUrl").value;
+        updateData.updateDesc = document.getElementById("updateDesc").value;
     }
 
     //Do not forget to update numPositions
     const submitDeleteDataClick =() =>{
-        /*
-        const deleteData = {
-            deletepID: document.getElementById("deletepID").value
-        };
-        */
+        deleteData.deletepID = document.getElementById("deletepID").value;
+    }
+
+    const submitDeleteCasDataClick =() =>{
+        deleteCasData.deleteCountry = document.getElementById("deleteCountry").value;
     }
 
 
@@ -286,6 +304,14 @@ const App = () => {
                                 <TextField id="deletepID" label="pID" />
                                 <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
                                     <Button variant ="contained" disableElevation onClick={submitDeleteDataClick} align="right">Delete</Button>
+                                </Box>
+                            </Box>
+
+                            <Typography> Delete-Cascade</Typography>
+                            <Box component="form" sx={{ "& .MuiTextField-root": {m: 1, width: "25ch"}, }} noValidate autoComplete="off">
+                                <TextField id="deleteCountry" label="Country" />
+                                <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
+                                    <Button variant ="contained" disableElevation onClick={submitDeleteCasDataClick} align="right">Delete</Button>
                                 </Box>
                             </Box>
                         </div>
