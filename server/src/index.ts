@@ -32,7 +32,8 @@ app.route('/api')
     .get(positionsServices.testAPI);
 
 app.route('/api/positions')
-    .get(positionsServices.getPositions);
+    .get(positionsServices.querySwitchPositions)
+    .post(positionsServices.insertRowPositions);
 
 app.listen(PORT, () => { // start server and listen on specified port
   console.log(`App is running on ${PORT}`) // confirm server is running and log port to the console
