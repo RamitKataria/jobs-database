@@ -114,7 +114,7 @@ CREATE TABLE Requires (
     );
 
 INSERT INTO Positions (pID, url, description, title, expiry, comID, pType)
-VALUE (1, 'www.ITconsultant123.com', 'IT consulting description goes here. ', 'IT Consultant', 2025-05-01, 1, 'Permanent Full-time'),
+VALUES (1, 'www.ITconsultant123.com', 'IT consulting description goes here. ', 'IT Consultant', 2025-05-01, 1, 'Permanent Full-time'),
       (2, 'www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach Database management.','CS304 Professor', 2022-05-01, 2, 'Permanent Full-time'),
       (3, 'www.redrobinsjobs.com', 'Floor staff, wanted for 15:00~19:00','Floor Staff', 2020-12-31, 3, 'Permanent Part-time'),
       (4, 'www.ubcprofjobs.com', 'Positin at University of British Columbia. Teach introduction of computer science.','CS110 Professor', 2023-01-01, 2, 'Contract Full-time'),
@@ -124,7 +124,7 @@ VALUE (1, 'www.ITconsultant123.com', 'IT consulting description goes here. ', 'I
       (8, 'www.ubcprofjobs.com', 'Internship opportunity for graduate student', 'Internship Opportunity at UBC', 2022-12-31, 'Internship');
 
 INSERT INTO Companies (comID, comName, nEmpl)
-VALUE (1, 'Accenture', 699000),
+VALUES (1, 'Accenture', 699000),
       (2, 'University of British Columbia', 6000),
       (3, 'Red Robins', 10000)
       (4, 'Thirsty', 5000),
@@ -132,77 +132,77 @@ VALUE (1, 'Accenture', 699000),
 
 
 INSERT INTO Position_Types (pType, fiexedLength, aimedAtStudents)
-VALUE ('Contract Full-time', true, false),
+VALUES ('Contract Full-time', true, false),
       ('Permanent Full-time', false, false),
       ('Contract Part-time', true, false),
       ('Permanent Part-time', false, false),
       ('Internship', true, true);
       
 INSERT INTO Industries (indName)
-VALUE ('Education'),
+VALUES ('Education'),
       ('Food'),
       ('Apparel'),
       ('Consulting'),
       ('Automobile');
 
 INSERT INTO Countries (counName)
-VALUE ('United States'),
+VALUES ('United States'),
       ('Canada'),
       ('United Kindgom'),
       ('France'),
       ('China');
 
 INSERT INTO Cities (cityName, counName, state)
-VALUE ('Los Angeles', 'United States', 'California'),
+VALUES ('Los Angeles', 'United States', 'California'),
       ('Vancouver', 'Canada', 'British Columbia'),
       ('New York', 'United States', 'New York'),
       ('Toronto', 'Canada', 'Ontario'),
       ('London', 'United Kingdom', 'London');
 
 INSERT INTO Requirements (reqID, strict, citizenReqFlag, expReqFlag)
-VALUE (1, true, true, false),
+VALUES (1, true, true, false),
       (2, true, true, false),
       (3, false, true, false),
       (6, true, false, true),
       (7, false, false, true);
 
 INSERT INTO Citizenship_Req (reqID, statusReq, counName)
-VALUE (1, 'Citizen', 'United States'),
+VALUES (1, 'Citizen', 'United States'),
       (2, 'Permanent Residence', 'United Kingdom'),
       (3, 'Citizen', 'Canada'),
       (4, 'Citizen', 'China'),
       (5, 'Permanent Residence', 'China');
 
 INSERT INTO Experience_Req (reqID, license_req, years, sName)
-VALUE (6, 'Class 5 Driving', 10, 'Driving'),
+VALUES (6, 'Class 5 Driving', 10, 'Driving'),
       (7, 'CPA', 5, 'Accounting'),
       (8, NULL, 3, 'C++'),
       (9, NULL, 4, 'Java'),
       (10, NULL, 2, 'Python');
 
 INSERT INTO Skills (sName, sDesc)
-VALUE ('Driving', 'Driving license, eligibility to drive a car'),
+VALUES ('Driving', 'Driving license, eligibility to drive a car'),
       ('Accounting', 'Accounting skills'),
       ('Java', 'Java, the programming language'),
       ('C++', 'C++, the programming language'),
       ('Python', 'Python, the programming language');
 
 INSERT INTO Requires (pID, reqID)
-VALUE (1, 2),
+VALUES (1, 2),
       (2, 6),
       (2, 1),
       (1, 8),
       (3, 2);
 
 INSERT INTO Located_In (pID, counName, cityName) 
-VALUE (1, 'United Kingdom', 'London'),
+VALUES (1, 'United Kingdom', 'London'),
       (2, 'United States', 'New York'),
       (3, 'Canada', 'Vancouver'),
       (4, 'Canada', 'Toronto'),
       (5, 'Canada', 'Vancouver');
 
 INSERT INTO Associated_Ind (comID, indName)
-VALUE (1, 'Consulting'),
+VALUES (1, 'Consulting'),
       (2, 'Education'),
       (3, 'Food'),
       (4, 'Food'),
