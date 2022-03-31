@@ -18,11 +18,22 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import TextField from '@mui/material/TextField';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import Grid from '@mui/material/Grid';
 import { TableCell, TableContainer, TableHead, TableRow, Paper, Table, TableBody } from "@mui/material";
+import { styled } from '@mui/material/styles';
 
 
 import DataTable from "./data/sampleData.json";
 
+var numPositions = 0;
+
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
 /* App component */
 
 const App = () => {
@@ -68,6 +79,7 @@ const App = () => {
 
 
     // get data from insert part textfield and save in insertData Object
+    //Do not forget to update numPositions
     const submitInsertDataClick =() =>{
         /*const insertData = {
             insertTitle: document.getElementById("insertTitle").value,
@@ -95,6 +107,7 @@ const App = () => {
         */
     }
 
+    //Do not forget to update numPositions
     const submitDeleteDataClick =() =>{
         /*
         const deleteData = {
@@ -115,8 +128,8 @@ const App = () => {
     let filterChecker = {
         ShowExpiredJobs: true,
         ShowURL: false,
-        ShowPositionType: false,
-        ShowRequiredID: false
+        ShowExpiryDate: false,
+        ShowCompany: false
     };
 
     /* on click handler of checkbox in filter section */
@@ -126,17 +139,29 @@ const App = () => {
 
     const filterURLCheck =() =>{
         filterChecker.ShowURL = !filterChecker.ShowURL;
-        console.log(filterChecker.ShowURL);
     }
 
-    const filterPTCheck =() =>{
-        filterChecker.ShowPositionType = !filterChecker.ShowPositionType;
+    const filterExpDateCheck =() =>{
+        filterChecker.ShowExpiryDate = !filterChecker.ShowExpiryDate;
     }
 
-    const filterRICheck =() => {
-        filterChecker.ShowRequiredID = !filterChecker.ShowRequiredID;
+    const filterComCheck =() => {
+        filterChecker.ShowCompany = !filterChecker.ShowCompany;
     }
 
+    // Do action of nested aggregation query
+    const handleNestedAggregationCheck =() => {
+
+    }
+
+    // Do action of division query
+    const handleDivisionCheck =() => {
+
+    }
+
+    const getNumPositions =() => {
+        return numPositions
+    }
 
     return(
         <>
@@ -164,15 +189,54 @@ const App = () => {
                         <Typography>Filter</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Selection Query <br /></Typography>
+                                        <FormControlLabel control={<Checkbox defaultChecked/>} label="Show Expired Jobs" onClick={filterExpCheck} />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Projection Query <br /></Typography>       
+                                    <FormControlLabel control={<Checkbox />} label="Show URL" onClick={filterURLCheck} />
+                                    <FormControlLabel control={<Checkbox />} label="Show Expiry Date" onClick={filterExpDateCheck} />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Join Query</Typography>
+                                <FormControlLabel control={<Checkbox />} label="Show Company" onClick={filterComCheck} />
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Nested Aggregation Query</Typography>
+                                <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
+                                            <Button variant ="outlined" disableElevation onClick={handleNestedAggregationCheck} align="right">Number of Position By City</Button>
+                                </Box>    
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Division</Typography>
+                                <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
+                                            <Button variant ="outlined" disableElevation onClick={handleDivisionCheck} align="right">Number of Position By City</Button>
+                                </Box>    
+                            </Item>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Item>
+                                <Typography variant="h6">Total Position available</Typography>
+                                <Typography variant="h5">
+                                    {numPositions}
+                                </Typography>
+                            </Item>
+                        </Grid>
+                    </Grid>
+
                     <Container maxWidth="md">
-                                        <Typography variant="h6">Selection Query <br /></Typography>
-                                            <FormGroup>
-                                                <FormControlLabel control={<Checkbox defaultChecked/>} label="Show Expired Jobs" onClick={filterExpCheck} />
-                                            </FormGroup>                      
-                                        <Typography variant="h6">Projection Query <br /></Typography>                  
-                                                    <FormControlLabel control={<Checkbox />} label="URL" onClick={filterURLCheck} />
-                                                    <FormControlLabel control={<Checkbox />} label="Position Type" onClick={filterPTCheck} />
-                                                    <FormControlLabel control={<Checkbox />} label="Requirement ID" onClick={filterRICheck} />  
+                                                          
                                         <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
                                             <Button variant ="contained" disableElevation onClick={tryingToFetch} align="right">Search</Button>
                                         </Box>           
