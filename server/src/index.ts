@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
 
-const app = express(); // create an instance of the express module (app is the conventional variable name used)
 const cors = require('cors'); // import the CORS library to allow Cross-origin resource sharing
 const helmet = require('helmet')
 const compression = require('compression')
@@ -21,6 +20,7 @@ const limiter = rateLimit({
   max: 5, // 5 requests,
 })
 
+const app = express(); // create an instance of the express module (app is the conventional variable name used)
 app.use(cors()); // app.use(cors(origin)); // Enable CORS
 app.use(express.json()); // Recognize Request Objects as JSON objects
 app.use(express.urlencoded({ extended: true }));
@@ -36,6 +36,13 @@ app.route('/api/positions')
     .post(positionsServices.insertRowPositions)
     .put(positionsServices.updateRowPositions)
     .delete(positionsServices.deleteRowPositions);
+
+app.route('/api/cities')
+    .get();
+
+app.route('api/countries/')
+    .get()
+    .delete();
 
 app.listen(PORT, () => { // start server and listen on specified port
   console.log(`App is running on ${PORT}`) // confirm server is running and log port to the console

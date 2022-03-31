@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PrismaClient } from "@prisma/client";
-
-let prisma: PrismaClient = new PrismaClient();
+const prisma = require('../config');
 
 async function querySwitchPositions(req: Request, res: Response) {
   try {
