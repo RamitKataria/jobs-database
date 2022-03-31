@@ -13,7 +13,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Container from '@mui/material/Container';
 import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import TextField from '@mui/material/TextField';
@@ -157,10 +156,6 @@ const App = () => {
     // Do action of division query
     const handleDivisionCheck =() => {
 
-    }
-
-    const getNumPositions =() => {
-        return numPositions
     }
 
     return(
