@@ -97,6 +97,7 @@ const App = () => {
     insertURL: null,
     insertDesc: null,
     insertComID: null,
+    insertpType: null,
     insertCountryName: null,
     insertCityName: null,
   };
@@ -125,8 +126,8 @@ const App = () => {
     insertData.insertURL = document.getElementById("insertUrl").value;
     insertData.insertDesc = document.getElementById("insertDesc").value;
     insertData.insertComID = document.getElementById("insertComID").value;
-    insertData.insertCountryName =
-      document.getElementById("insertCountryName").value;
+    insertData.insertpType = document.getElementById("insertpType").value;
+    insertData.insertCountryName = document.getElementById("insertCountryName").value;
     insertData.insertCityName = document.getElementById("insertCityName").value;
     /*console.log(insertData.insertTitle);*/
   };
@@ -532,8 +533,8 @@ const App = () => {
                     <TextField required id="insertDesc" label="Description" />
                     <TextField required id="insertComID" label="Company ID" />
                     <TextField required id="insertpType" label="Position Type" />
-                    <TextField required id="insertCountry" label="Position Type" />
-                    <TextField required id="insertCity" label="Position Type" />
+                    <TextField required id="insertCountryName" label="Position Type" />
+                    <TextField required id="insertCityName" label="Position Type" />
                     <Box
                       sx={{
                         display: "flex",
