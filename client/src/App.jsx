@@ -20,7 +20,6 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Grid from '@mui/material/Grid';
 import { TableCell, TableContainer, TableHead, TableRow, Paper, Table, TableBody } from "@mui/material";
 import { styled } from '@mui/material/styles';
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
 var numPositions = 0;
 
@@ -39,14 +38,6 @@ const App = () => {
             { pid: 0, title: "empty" },
             { pid: 1, title: "sample title"}
         ]);
-
-    rows.forEach((row) => {
-        Object.entries(row).map((key, value) => {
-            console.log(key, value);
-        })
-        console.log('\n')
-    })
-    
 
     /* handle buttonClicks */
     const handleAdminClick = () => {
