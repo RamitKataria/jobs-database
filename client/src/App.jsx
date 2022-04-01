@@ -277,6 +277,9 @@ const App = () => {
 
   }
 
+  const getCityProjQuery = () => {};
+  const getCountryProjQuery = () => {};
+
   // Do action of division query
 
   return (
@@ -453,14 +456,33 @@ const App = () => {
                       "& > *": { m: 1 },
                     }}
                   >
+                  <ButtonGroup
+                    variant = "contained"
+                    aria-label="outlined button group"
+                  >
                     <Button
-                      variant="contained"
-                      disableElevation
                       onClick={getDataProjQuery}
                       align="right"
                     >
                       Show all positions
                     </Button>
+                    <Button
+                      onClick={getCityProjQuery}
+                      align="right"
+                    >
+                      Show all Countries
+                    </Button>
+                    <Button
+                      onClick={getCountryProjQuery}
+                      align="right"
+                    >
+                      Show all Cities
+                    </Button>
+                  </ButtonGroup>
+
+                    
+
+                    
                   </Box>
                 </Container>
               </AccordionDetails>
