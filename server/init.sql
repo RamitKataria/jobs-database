@@ -212,3 +212,10 @@ VALUES (1, 'Consulting'),
       (3, 'Food'),
       (4, 'Food'),
       (5, 'Apparel');
+
+-- CREATE ASSERTION positionCitiesParticipation
+--
+-- CHECK
+-- (NOT EXISTS ((SELECT pid FROM Positions)
+-- 		EXCEPT
+-- 	               (SELECT pid FROM Located_In)));
