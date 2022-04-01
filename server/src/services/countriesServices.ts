@@ -22,7 +22,7 @@ async function projectionQueryCountries(req: Request, res: Response) {
 
 async function deleteRowCountries(req: Request, res: Response) {
     try{
-        const reqData = req.body;
+        const reqData = req.params;
 
         await prisma.countries.delete({
             where: {
