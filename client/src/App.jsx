@@ -202,12 +202,15 @@ const App = () => {
     url,
     description
   ) {
+
     let postBody = JSON.stringify({
-      pid: parseInt(pID),
-      url: url,
-      description: description,
-      title: title,
-      expiry: expiry
+      fields: {
+        pid: parseInt(pID),
+        url: url,
+        description: description,
+        title: title,
+        expiry: expiry
+      }
     });
 
     console.log(postBody)
@@ -314,7 +317,6 @@ const App = () => {
       fetch(`${apiUrl}/positions/aggregation_positions_count`)
         .then((response) => response.json())
         .then((data) => {
-          console.log("Success getting numPos:" + data._count);
           num = data._count;
           setState({
             ...state,
