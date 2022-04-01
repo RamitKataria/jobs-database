@@ -332,8 +332,36 @@ const App = () => {
 
   }
 
-  const getCityProjQuery = () => {};
-  const getCountryProjQuery = () => {};
+  const getCityProjQuery = () => {
+    try {
+      fetch(`${apiUrl}/cities/true/true/true/`)
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log(data);
+          setState({
+            ...state,
+            rows: data,
+          });
+        });
+    } catch (error) {
+      console.log("Error:\n", error);
+    }
+  };
+  const getCountryProjQuery = () => {
+    try {
+      fetch(`${apiUrl}/countries`)
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log(data);
+          setState({
+            ...state,
+            rows: data,
+          });
+        });
+    } catch (error) {
+      console.log("Error:\n", error);
+    }
+  };
   
 
   return (
@@ -523,13 +551,13 @@ const App = () => {
                       Show all positions
                     </Button>
                     <Button
-                      onClick={getCityProjQuery}
+                      onClick={getCountryProjQuery}
                       align="right"
                     >
                       Show all Countries
                     </Button>
                     <Button
-                      onClick={getCountryProjQuery}
+                      onClick={getCityProjQuery}
                       align="right"
                     >
                       Show all Cities
