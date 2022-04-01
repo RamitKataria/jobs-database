@@ -162,16 +162,11 @@ const App = () => {
 
   // Object to Monitor if filter Checkbox is checked or not
   let filterChecker = {
-    ShowExpiredJobs: true,
     ShowURL: false,
     ShowExpiryDate: false,
-    ShowCompany: false,
   };
 
   /* on click handler of checkbox in filter section */
-  const filterExpCheck = () => {
-    filterChecker.ShowExpiredJobs = !filterChecker.ShowExpiredJobs;
-  };
 
   const filterURLCheck = () => {
     filterChecker.ShowURL = !filterChecker.ShowURL;
@@ -181,15 +176,15 @@ const App = () => {
     filterChecker.ShowExpiryDate = !filterChecker.ShowExpiryDate;
   };
 
-  const filterComCheck = () => {
-    filterChecker.ShowCompany = !filterChecker.ShowCompany;
-  };
 
-  // Do action of nested aggregation query
-  const handleNestedAggregationCheck = () => {};
+  const selectionQueryHandle = () => {};
+  const projectionQueryHandle = () => {};
+  const joinQueryHandle  = () => {};
+  const nestedAggregationHandle = () => {};
+  const divisionQueryHandle = () => {};
 
   // Do action of division query
-  const handleDivisionCheck = () => {};
+  
 
   return (
     <>
@@ -239,11 +234,14 @@ const App = () => {
                     <Typography variant="h6">
                       Selection Query <br />
                     </Typography>
-                    <FormControlLabel
-                      control={<Checkbox defaultChecked />}
-                      label="Show Expired Jobs"
-                      onClick={filterExpCheck}
-                    />
+                    <Button
+                        variant="outlined"
+                        disableElevation
+                        onClick={selectionQueryHandle}
+                        align="right"
+                      >
+                        Get Active Positions
+                      </Button>
                   </Item>
                 </Grid>
                 <Grid item xs={6}>
@@ -261,16 +259,27 @@ const App = () => {
                       label="Show Expiry Date"
                       onClick={filterExpDateCheck}
                     />
+                    <Button
+                        variant="outlined"
+                        disableElevation
+                        onClick={projectionQueryHandle}
+                        align="right"
+                      >
+                        Search
+                      </Button>
                   </Item>
                 </Grid>
                 <Grid item xs={6}>
                   <Item>
                     <Typography variant="h6">Join Query</Typography>
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label="Show Company"
-                      onClick={filterComCheck}
-                    />
+                    <Button
+                        variant="outlined"
+                        disableElevation
+                        onClick={joinQueryHandle}
+                        align="right"
+                      >
+                        Get Company Details
+                      </Button>
                   </Item>
                 </Grid>
                 <Grid item xs={6}>
@@ -289,7 +298,7 @@ const App = () => {
                       <Button
                         variant="outlined"
                         disableElevation
-                        onClick={handleNestedAggregationCheck}
+                        onClick={nestedAggregationHandle}
                         align="right"
                       >
                         Number of Position By City
@@ -311,10 +320,10 @@ const App = () => {
                       <Button
                         variant="outlined"
                         disableElevation
-                        onClick={handleDivisionCheck}
+                        onClick={divisionQueryHandle}
                         align="right"
                       >
-                        Number of Position By City
+                        positions of company with all position type
                       </Button>
                     </Box>
                   </Item>
@@ -344,7 +353,7 @@ const App = () => {
                     onClick={fetchPositions}
                     align="right"
                   >
-                    Search
+                    Show all positions
                   </Button>
                 </Box>
               </Container>
