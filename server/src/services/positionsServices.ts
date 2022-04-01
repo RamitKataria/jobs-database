@@ -184,12 +184,10 @@ async function aggregationQueryPositionsGroupBy(req: Request, res: Response){
 
 async function aggregationQueryPositions(req: Request, res: Response){
   try{
-    const getQuery2: object | null = await prisma.located_in.aggregate({
+    const getQuery2: object | null = await prisma.positions.aggregate({
       where: {
-        positions: {
-          expiry: {
-            gt: new Date()
-          }
+        expiry: {
+          gt: new Date()//
         }
       },
       _count: {
