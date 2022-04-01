@@ -285,6 +285,7 @@ const App = () => {
   const getCityProjQuery = () => {};
   const getCountryProjQuery = () => {};
 
+  const updateTotalPosHandle = () => {};
   // Do action of division query
 
   return (
@@ -443,11 +444,13 @@ const App = () => {
                   <Grid item xs={6}>
                     <Item>
                       <Typography variant="h6">
+                        
                         Total Positions available
                       </Typography>
+                      
                       {
                         <Typography variant="h5"> {state.totalPos} </Typography>
-                      }
+                      }<Button variant="outlined" onClick={updateTotalPosHandle}>Update</Button>
                     </Item>
                   </Grid>
                 </Grid>
