@@ -312,6 +312,12 @@ async function deleteRowPositions(req: Request, res: Response) {
   try{
     const reqData = req.params;
 
+    await prisma.located_in.deleteMany({
+      where: {
+        pid: parseInt(reqData.pid)
+      }
+    });
+
     await prisma.positions.delete({
       where: {
         pid: parseInt(reqData.pid)
