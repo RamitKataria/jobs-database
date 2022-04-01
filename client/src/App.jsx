@@ -182,8 +182,8 @@ const App = () => {
             ...state,
             rows: data,
           });
+          updateNumberOfPositions();
         });
-      updateNumberOfPositions();
     } catch (error) {
       console.log("Error:\n", error);
     }
@@ -201,6 +201,7 @@ const App = () => {
             ...state,
             rows: data,
           });
+          updateNumberOfPositions();
         });
     } catch (error) {
       console.log("Error:\n", error);
@@ -261,19 +262,22 @@ const App = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log("Success getting numPos:" + data._count);
-          num = data._count.pid;
+          num = data._count;
+          setState({
+            ...state,
+            totalPos: num,
+          });
         });
     } catch (error) {
       console.log("Error:\n", error);
       num = -1;
+      setState({
+        ...state,
+        totalPos: num,
+      });
     }
 
-    setState(
-      {
-        ...state,
-        totalPos: num
-      }
-    )
+    
 
   }
 
@@ -632,7 +636,7 @@ const App = () => {
               </TableHead>
               <TableBody>
                 {state.rows.map((row) => (
-                  <TableRow key={row[Object.keys(row)[0]]}>
+                  <TableRow key={Object.keys(row)[0] ? row[Object.keys(row)[0]] + row[Object.keys(row)[1]] : row[Object.keys(row)[0]]}>
                     {Object.keys(row).map((key) => (
                       <TableCell align="left"> {row[key]} </TableCell>
                     ))}
