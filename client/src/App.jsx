@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -20,9 +20,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Grid from '@mui/material/Grid';
 import { TableCell, TableContainer, TableHead, TableRow, Paper, Table, TableBody } from "@mui/material";
 import { styled } from '@mui/material/styles';
-
-
-import DataTable from "./data/sampleData.json";
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
 var numPositions = 0;
 
@@ -36,13 +34,27 @@ const Item = styled(Paper)(({ theme }) => ({
 /* App component */
 
 const App = () => {
+    let [rows, setRows] = useState(
+        [
+            { pid: 0, title: "empty" },
+            { pid: 1, title: "sample title"}
+        ]);
+
+    rows.forEach((row) => {
+        Object.entries(row).map((key, value) => {
+            console.log(key, value);
+        })
+        console.log('\n')
+    })
+    
+
     /* handle buttonClicks */
     const handleAdminClick = () => {
-        const AdminMode = document.getElementById("AdminMode");
-        if(AdminMode.style.display==="block"){
-            AdminMode.style.display = "none";
+        const AdminModeEdit = document.getElementById("AdminMode");
+        if(AdminModeEdit.style.display==="block"){
+            AdminModeEdit.style.display = "none";
         }else{
-            AdminMode.style.display = "block";
+            AdminModeEdit.style.display = "block";
         }
     }
 
@@ -135,12 +147,20 @@ const App = () => {
 
 
     // check the filter, query and get data
-    async function tryingToFetch(){
-        fetch("https://jobsdata.herokuapp.com/api/")
-            .then(res => res.json())
-            .then(data => console.log(data))
+    async function fetchPositions(){
+        try {
+            fetch('https://jobsdata.herokuapp.com/api/positions')
+            .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    setRows(data)
+                });
+        } catch (error) {
+            console.log('Error:\n', error)
+        }
     }
    
+
     // Object to Monitor if filter Checkbox is checked or not
     let filterChecker = {
         ShowExpiredJobs: true,
@@ -251,7 +271,7 @@ const App = () => {
                     <Container maxWidth="md">
                                                           
                                         <Box sx={{display: 'flex',flexDirection: 'column', alignItems: 'center','& > *': {  m: 1,},  }}>
-                                            <Button variant ="contained" disableElevation onClick={tryingToFetch} align="right">Search</Button>
+                                            <Button variant ="contained" disableElevation onClick={fetchPositions} align="right">Search</Button>
                                         </Box>           
                     </Container>
                     </AccordionDetails>
@@ -330,33 +350,42 @@ const App = () => {
 
         <main>
 
-        <TableContainer component={Paper}>
+
+
+        <TableContainer id="table-from-data" component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
+                        <TableHead>
+                            <TableRow key="Table Header">
+                                {Object.keys(rows[0]).map((key) => (
+                                    <TableCell align="right"> { key } </TableCell>
+                                ))}
+                            </TableRow>
+                    {/* <TableRow>
                         <TableCell>pID</TableCell>
                         <TableCell align="right">title</TableCell>
                         <TableCell align="right">expiry</TableCell>
                         <TableCell align="right">city</TableCell>
                         <TableCell align="right">country</TableCell>
-                    </TableRow>
+                    </TableRow> */}
                 </TableHead>
-                <TableBody>
-                {DataTable.map((row) => (
-                    <TableRow
-                        key={row.name}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                        <TableCell align="left">{row.pID}</TableCell>
-                        <TableCell align="right">{row.title}</TableCell>
-                        <TableCell align="right">{row.expiry}</TableCell>
-                        <TableCell align="right">{row.city}</TableCell>
-                        <TableCell align="right">{row.country}</TableCell>
-                    </TableRow>
-                ))}
+                        <TableBody>
+                            
+                            {rows.map((row) => (
+                                <TableRow key={row[Object.keys(row)[0]]} >
+                                    {Object.keys(row).map((key) => {
+                                        return <TableCell align="left"> {row[key]} </TableCell>
+                                    })}
+                                    {/* <TableCell align="left">{row.pID}</TableCell>
+                                    <TableCell align="right">{row.title}</TableCell>
+                                    <TableCell align="right">{row.expiry}</TableCell>
+                                    <TableCell align="right">{row.city}</TableCell>
+                                    <TableCell align="right">{row.country}</TableCell> */}
+                                </TableRow>
+                            ))}
                 </TableBody>
             </Table>
         </TableContainer>
+
         </main>
         </>
 
