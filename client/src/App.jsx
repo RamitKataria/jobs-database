@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -29,7 +29,9 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-var numPositions = 0;
+let numPositions = 0;
+
+const url = "https://jobsdata.herokuapp.com/api";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -41,9 +43,13 @@ const Item = styled(Paper)(({ theme }) => ({
 /* App component */
 
 const App = () => {
-  let [rows, setRows] = useState([
-    { None: "None" }
-  ]);
+  let [state, setState] = useState(
+    {
+      showURL: false,
+      showExpiry: false,
+      totalPos: 0,
+      rows: [{ None: "None" }]
+    });
 
   /* handle buttonClicks */
   const handleAdminClick = () => {
@@ -145,96 +151,184 @@ const App = () => {
   };
 
   // check the filter, query and get data
-  async function fetchPositions() {
+  // /api/positions/:queryType/:pid/:url/:description/:title/:expiry/:comid/:ptype/
+  async function getDataProjQuery() {
+    
+  }
+
+  async function insertPosition(
+    title,
+    expiry,
+    url,
+    description,
+    comID,
+    counName,
+    cityName
+  ) {
+    try {
+      const response = await fetch();
+    } catch {}
+  }
+
+  const selectionQueryHandle = () => {
     try {
       fetch(
-        "https://jobsdata.herokuapp.com/api/positions/projection/true/true/false/true/true/false/false"
+        `${url}/positions/selection/true/${state.showURL}/false/true/${state.showExpiry}/false/false`
       )
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          setRows(data);
+          setState({
+            ...state,
+            rows: data,
+          });
+        });
+      updateNumberOfPositions();
+    } catch (error) {
+      console.log("Error:\n", error);
+    }
+  };
+
+  const projectionQueryHandle = () => {
+    try {
+      fetch(
+        `${url}/positions/projection/true/${state.showURL}/false/true/${state.showExpiry}/false/false`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setState({
+            ...state,
+            rows: data,
+          });
         });
     } catch (error) {
       console.log("Error:\n", error);
     }
+  };
+  const joinQueryHandle = () => {
+    try {
+      fetch(
+        `${url}/positions/join/`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setState({
+            ...state,
+            rows: data,
+          });
+        });
+    } catch (error) {
+      console.log("Error:\n", error);
+    }
+  };
+  const nestedAggregationHandle = () => {
+    try {
+      fetch(`${url}/positions/aggregation_positions_count_groupby`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setState({
+            ...state,
+            rows: data,
+          });
+        });
+    } catch (error) {
+      console.log("Error:\n", error);
+    }
+  };
+  const divisionQueryHandle = () => {
+    try {
+      fetch(`${url}/positions/division`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setState({
+            ...state,
+            rows: data,
+          });
+        });
+    } catch (error) {
+      console.log("Error:\n", error);
+    }
+  };
+
+  function updateNumberOfPositions() {
+    let num = 0;
+    try {
+      fetch(`${url}/positions/aggregation_positions_count`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success getting numPos:" + data._count);
+          num = data._count.pid;
+        });
+    } catch (error) {
+      console.log("Error:\n", error);
+      num = -1;
+    }
+
+    setState(
+      {
+        ...state,
+        totalPos: num
+      }
+    )
+
   }
 
-  // Object to Monitor if filter Checkbox is checked or not
-  let filterChecker = {
-    ShowURL: false,
-    ShowExpiryDate: false,
-  };
-
-  /* on click handler of checkbox in filter section */
-
-  const filterURLCheck = () => {
-    filterChecker.ShowURL = !filterChecker.ShowURL;
-  };
-
-  const filterExpDateCheck = () => {
-    filterChecker.ShowExpiryDate = !filterChecker.ShowExpiryDate;
-  };
-
-
-  const selectionQueryHandle = () => {};
-  const projectionQueryHandle = () => {};
-  const joinQueryHandle  = () => {};
-  const nestedAggregationHandle = () => {};
-  const divisionQueryHandle = () => {};
-
   // Do action of division query
-  
 
   return (
     <>
       <body>
-        <div>
-          <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-              <Toolbar>
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  sx={{ mr: 2 }}
-                >
-                  <WorkOutlineIcon />
-                </IconButton>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                  CPSC304: Job Database
-                </Typography>
-                <Button color="inherit" onClick={handleAdminClick}>
-                  Switch to admin
-                </Button>
-              </Toolbar>
-            </AppBar>
-          </Box>
-        </div>
+        <main>
+          <div>
+            <Box sx={{ flexGrow: 1 }}>
+              <AppBar position="static">
+                <Toolbar>
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    sx={{ mr: 2 }}
+                  >
+                    <WorkOutlineIcon />
+                  </IconButton>
+                  <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    CPSC304: Job Database
+                  </Typography>
+                  <Button color="inherit" onClick={handleAdminClick}>
+                    Switch to admin
+                  </Button>
+                </Toolbar>
+              </AppBar>
+            </Box>
+          </div>
 
-        <section>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <FilterAltIcon />
-              <Typography>Filter</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid
-                container
-                rowSpacing={1}
-                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          <section>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
               >
-                <Grid item xs={6}>
-                  <Item>
-                    <Typography variant="h6">
-                      Selection Query <br />
-                    </Typography>
-                    <Button
+                <FilterAltIcon />
+                <Typography>Filter</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Grid
+                  container
+                  rowSpacing={1}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                >
+                  <Grid item xs={6}>
+                    <Item>
+                      <Typography variant="h6">
+                        Selection Query <br />
+                      </Typography>
+                      <Button
                         variant="outlined"
                         disableElevation
                         onClick={selectionQueryHandle}
@@ -242,24 +336,34 @@ const App = () => {
                       >
                         Get Active Positions
                       </Button>
-                  </Item>
-                </Grid>
-                <Grid item xs={6}>
-                  <Item>
-                    <Typography variant="h6">
-                      Projection Query <br />
-                    </Typography>
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label="Show URL"
-                      onClick={filterURLCheck}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label="Show Expiry Date"
-                      onClick={filterExpDateCheck}
-                    />
-                    <Button
+                    </Item>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Item>
+                      <Typography variant="h6">
+                        Projection Query <br />
+                      </Typography>
+                      <FormControlLabel
+                        control={<Checkbox />}
+                        label="Show URL"
+                        onClick={(event) =>
+                          setState({
+                            ...state,
+                            showURL: event.target.checked,
+                          })
+                        }
+                      />
+                      <FormControlLabel
+                        control={<Checkbox />}
+                        label="Show Expiry Date"
+                        onClick={(event) =>
+                          setState({
+                            ...state,
+                            showExpiry: event.target.checked,
+                          })
+                        }
+                      />
+                      <Button
                         variant="outlined"
                         disableElevation
                         onClick={projectionQueryHandle}
@@ -267,12 +371,12 @@ const App = () => {
                       >
                         Search
                       </Button>
-                  </Item>
-                </Grid>
-                <Grid item xs={6}>
-                  <Item>
-                    <Typography variant="h6">Join Query</Typography>
-                    <Button
+                    </Item>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Item>
+                      <Typography variant="h6">Join Query</Typography>
+                      <Button
                         variant="outlined"
                         disableElevation
                         onClick={joinQueryHandle}
@@ -280,65 +384,97 @@ const App = () => {
                       >
                         Get Company Details
                       </Button>
-                  </Item>
-                </Grid>
-                <Grid item xs={6}>
-                  <Item>
-                    <Typography variant="h6">
-                      Nested Aggregation Query
-                    </Typography>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        "& > *": { m: 1 },
-                      }}
-                    >
-                      <Button
-                        variant="outlined"
-                        disableElevation
-                        onClick={nestedAggregationHandle}
-                        align="right"
+                    </Item>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Item>
+                      <Typography variant="h6">
+                        Nested Aggregation Query
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          "& > *": { m: 1 },
+                        }}
                       >
-                        Number of Position By City
-                      </Button>
-                    </Box>
-                  </Item>
-                </Grid>
-                <Grid item xs={6}>
-                  <Item>
-                    <Typography variant="h6">Division</Typography>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        "& > *": { m: 1 },
-                      }}
-                    >
-                      <Button
-                        variant="outlined"
-                        disableElevation
-                        onClick={divisionQueryHandle}
-                        align="right"
+                        <Button
+                          variant="outlined"
+                          disableElevation
+                          onClick={nestedAggregationHandle}
+                          align="right"
+                        >
+                          Number of Position By City
+                        </Button>
+                      </Box>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Item>
+                      <Typography variant="h6">Division</Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          "& > *": { m: 1 },
+                        }}
                       >
-                        positions of company with all position type
-                      </Button>
-                    </Box>
-                  </Item>
+                        <Button
+                          variant="outlined"
+                          disableElevation
+                          onClick={divisionQueryHandle}
+                          align="right"
+                        >
+                          positions of company with all position type
+                        </Button>
+                      </Box>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Item>
+                      <Typography variant="h6">
+                        Total Positions available
+                      </Typography>
+                      {
+                        <Typography variant="h5"> {state.totalPos} </Typography>
+                      }
+                    </Item>
+                  </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <Item>
-                    <Typography variant="h6">
-                      Total Position available
-                    </Typography>
-                    <Typography variant="h5">{numPositions}</Typography>
-                  </Item>
-                </Grid>
-              </Grid>
 
-              <Container maxWidth="md">
+                <Container maxWidth="md">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      "& > *": { m: 1 },
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      disableElevation
+                      onClick={getDataProjQuery}
+                      align="right"
+                    >
+                      Show all positions
+                    </Button>
+                  </Box>
+                </Container>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion id="AdminMode">
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
+                id="panel2a-header"
+              >
+                <ModeEditIcon />
+                <Typography>Edit Database</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
                 <Box
                   sx={{
                     display: "flex",
@@ -347,193 +483,166 @@ const App = () => {
                     "& > *": { m: 1 },
                   }}
                 >
-                  <Button
-                    variant="contained"
-                    disableElevation
-                    onClick={fetchPositions}
-                    align="right"
+                  <ButtonGroup
+                    variant="outlined"
+                    aria-label="outlined button group"
                   >
-                    Show all positions
-                  </Button>
+                    <Button onClick={handleInsertModeClick}>Insert</Button>
+                    <Button onClick={handleUpdateModeClick}>Update</Button>
+                    <Button onClick={handleDeleteModeClick}>Delete</Button>
+                  </ButtonGroup>
                 </Box>
-              </Container>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion id="AdminMode">
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2a-content"
-              id="panel2a-header"
-            >
-              <ModeEditIcon />
-              <Typography>Edit Database</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  "& > *": { m: 1 },
-                }}
-              >
-                <ButtonGroup
-                  variant="outlined"
-                  aria-label="outlined button group"
-                >
-                  <Button onClick={handleInsertModeClick}>Insert</Button>
-                  <Button onClick={handleUpdateModeClick}>Update</Button>
-                  <Button onClick={handleDeleteModeClick}>Delete</Button>
-                </ButtonGroup>
-              </Box>
-              <div id="InsertMode">
-                <Typography>Insert Data</Typography>
-                <Box
-                  component="form"
-                  sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <TextField required id="insertTitle" label="Title Name" />
-                  <TextField required id="insertExpiry" label="Expiry Date" />
-                  <TextField required id="insertUrl" label="URL" />
-                  <TextField required id="insertDesc" label="Description" />
-                  <TextField required id="insertComID" label="Company ID" />
-                  <TextField
-                    required
-                    id="insertCountryName"
-                    label="Country Name"
-                  />
-                  <TextField required id="insertCityName" label="City Name" />
+                <div id="InsertMode">
+                  <Typography>Insert Data</Typography>
                   <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      "& > *": { m: 1 },
-                    }}
+                    component="form"
+                    sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
+                    noValidate
+                    autoComplete="off"
                   >
-                    <Button
-                      variant="contained"
-                      disableElevation
-                      onClick={submitInsertDataClick}
-                      align="right"
+                    <TextField required id="insertTitle" label="Title Name" />
+                    <TextField required id="insertExpiry" label="Expiry Date" />
+                    <TextField required id="insertUrl" label="URL" />
+                    <TextField required id="insertDesc" label="Description" />
+                    <TextField required id="insertComID" label="Company ID" />
+                    <TextField
+                      required
+                      id="insertCountryName"
+                      label="Country Name"
+                    />
+                    <TextField required id="insertCityName" label="City Name" />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        "& > *": { m: 1 },
+                      }}
                     >
-                      Insert
-                    </Button>
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        onClick={submitInsertDataClick}
+                        align="right"
+                      >
+                        Insert
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              </div>
-              <div id="UpdateMode">
-                <Typography>Update Data</Typography>
-                <Box
-                  component="form"
-                  sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <TextField required id="updatepID" label="Position ID" />
-                  <TextField required id="updateTitle" label="Title Name" />
-                  <TextField required id="updateExpiry" label="Expiry Date" />
-                  <TextField required id="updateUrl" label="URL" />
-                  <TextField required id="updateDesc" label="Description" />
+                </div>
+                <div id="UpdateMode">
+                  <Typography>Update Data</Typography>
                   <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      "& > *": { m: 1 },
-                    }}
+                    component="form"
+                    sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
+                    noValidate
+                    autoComplete="off"
                   >
-                    <Button
-                      variant="contained"
-                      disableElevation
-                      onClick={submitUpdateDataClick}
-                      align="right"
+                    <TextField required id="updatepID" label="Position ID" />
+                    <TextField required id="updateTitle" label="Title Name" />
+                    <TextField required id="updateExpiry" label="Expiry Date" />
+                    <TextField required id="updateUrl" label="URL" />
+                    <TextField required id="updateDesc" label="Description" />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        "& > *": { m: 1 },
+                      }}
                     >
-                      Update
-                    </Button>
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        onClick={submitUpdateDataClick}
+                        align="right"
+                      >
+                        Update
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              </div>
-              <div id="DeleteMode">
-                <Typography>Delete data</Typography>
-                <Box
-                  component="form"
-                  sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <TextField id="deletepID" label="pID" />
+                </div>
+                <div id="DeleteMode">
+                  <Typography>Delete data</Typography>
                   <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      "& > *": { m: 1 },
-                    }}
+                    component="form"
+                    sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
+                    noValidate
+                    autoComplete="off"
                   >
-                    <Button
-                      variant="contained"
-                      disableElevation
-                      onClick={submitDeleteDataClick}
-                      align="right"
+                    <TextField id="deletepID" label="pID" />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        "& > *": { m: 1 },
+                      }}
                     >
-                      Delete
-                    </Button>
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        onClick={submitDeleteDataClick}
+                        align="right"
+                      >
+                        Delete
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
 
-                <Typography> Delete-Cascade</Typography>
-                <Box
-                  component="form"
-                  sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <TextField id="deleteCountry" label="Country" />
+                  <Typography> Delete-Cascade</Typography>
                   <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      "& > *": { m: 1 },
-                    }}
+                    component="form"
+                    sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
+                    noValidate
+                    autoComplete="off"
                   >
-                    <Button
-                      variant="contained"
-                      disableElevation
-                      onClick={submitDeleteCasDataClick}
-                      align="right"
+                    <TextField id="deleteCountry" label="Country" />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        "& > *": { m: 1 },
+                      }}
                     >
-                      Delete
-                    </Button>
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        onClick={submitDeleteCasDataClick}
+                        align="right"
+                      >
+                        Delete
+                      </Button>
+                    </Box>
                   </Box>
-                </Box>
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        </section>
-      </body>
+                </div>
+              </AccordionDetails>
+            </Accordion>
+          </section>
 
-      <main>
-        <TableContainer id="table-from-data" component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow key="Table Header">
-                {Object.keys(rows[0]).map((key) => (<TableCell align="left"> {key} </TableCell>))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => 
-                <TableRow key={row[Object.keys(row)[0]]}>
-                  {Object.keys(row).map((key) => <TableCell align="left"> {row[key]} </TableCell>)}
+          <TableContainer id="table-from-data" component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow key="Table Header">
+                  {Object.keys(state.rows[0]).map((key) => (
+                    <TableCell align="left"> {key} </TableCell>
+                  ))}
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </main>
+              </TableHead>
+              <TableBody>
+                {state.rows.map((row) => (
+                  <TableRow key={row[Object.keys(row)[0]]}>
+                    {Object.keys(row).map((key) => (
+                      <TableCell align="left"> {row[key]} </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </main>
+      </body>
     </>
   );
 };
