@@ -533,10 +533,9 @@ const App = () => {
                     <TextField required id="insertComID" label="Company ID" />
                     <TextField
                       required
-                      id="insertCountryName"
-                      label="Country Name"
+                      id="insertpType"
+                      label="Position Type"
                     />
-                    <TextField required id="insertCityName" label="City Name" />
                     <Box
                       sx={{
                         display: "flex",
