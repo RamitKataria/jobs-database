@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -29,8 +29,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-let numPositions = 0;
-
 const url = "https://jobsdata.herokuapp.com/api";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -43,13 +41,12 @@ const Item = styled(Paper)(({ theme }) => ({
 /* App component */
 
 const App = () => {
-  let [state, setState] = useState(
-    {
-      showURL: false,
-      showExpiry: false,
-      totalPos: 0,
-      rows: [{ None: "None" }]
-    });
+  let [state, setState] = useState({
+    showURL: false,
+    showExpiry: false,
+    rows: [{ None: "None" }],
+    totalPos: 0
+  });
 
   /* handle buttonClicks */
   const handleAdminClick = () => {
@@ -110,10 +107,6 @@ const App = () => {
     updateDesc: null,
   };
 
-  let deleteData = {
-    deletepID: null,
-  };
-
   let deleteCasData = {
     deleteCountry: null,
   };
@@ -121,15 +114,15 @@ const App = () => {
   // get data from insert part textfield and save in insertData Object
   //Do not forget to update numPositions
   const submitInsertDataClick = () => {
-    insertData.insertTitle = document.getElementById("insertTitle").value;
-    insertData.insertExpiry = document.getElementById("insertExpiry").value;
-    insertData.insertURL = document.getElementById("insertUrl").value;
-    insertData.insertDesc = document.getElementById("insertDesc").value;
-    insertData.insertComID = document.getElementById("insertComID").value;
-    insertData.insertpType = document.getElementById("insertpType").value;
-    insertData.insertCountryName = document.getElementById("insertCountryName").value;
-    insertData.insertCityName = document.getElementById("insertCityName").value;
-    /*console.log(insertData.insertTitle);*/
+    insertPosition(
+      insertData.insertTitle = document.getElementById("insertTitle").value,
+      insertData.insertExpiry = document.getElementById("insertExpiry").value,
+      insertData.insertURL = document.getElementById("insertUrl").value,
+      insertData.insertDesc = document.getElementById("insertDesc").value,
+      insertData.insertComID = document.getElementById("insertComID").value,
+      insertData.insertCountryName = document.getElementById("insertCountryName").value,
+      insertData.insertCityName = document.getElementById("insertCityName").value,
+      insertData.insertpType = document.getElementById("insertpType").value)
   };
 
   // get data from insert part textfield and save in updateData Object
@@ -143,7 +136,15 @@ const App = () => {
 
   //Do not forget to update numPositions
   const submitDeleteDataClick = () => {
-    deleteData.deletepID = document.getElementById("deletepID").value;
+    let pID = document.getElementById("deletepID").value;
+    try {
+      const response = fetch(`${url}/positions/${pID}`, {
+        method: 'DELETE'
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const submitDeleteCasDataClick = () => {
@@ -164,10 +165,28 @@ const App = () => {
     description,
     comID,
     counName,
-    cityName
+    cityName,
+    pType
   ) {
+    console.log(
+      `title: ${title}, expiry: ${expiry}, url: ${url}, desc: ${description}, comID: ${comID}, country: ${counName}, city: ${cityName}, type: ${pType}`
+    )
     try {
-      const response = await fetch();
+      const response = await fetch(`${url}/positions/`, {
+        method: "POST",
+        body: {
+          pid: 0,
+          url: url,
+          description: description,
+          title: title,
+          expiry: expiry,
+          comid: comID,
+          ptype: pType,
+          cityname: cityName,
+          counname: counName,
+        },
+      });
+      console.log(response);
     } catch {}
   }
 
@@ -178,12 +197,11 @@ const App = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setState({
             ...state,
             rows: data,
           });
-          updateNumberOfPositions();
         });
     } catch (error) {
       console.log("Error:\n", error);
@@ -197,12 +215,11 @@ const App = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setState({
             ...state,
             rows: data,
           });
-          updateNumberOfPositions();
         });
     } catch (error) {
       console.log("Error:\n", error);
@@ -215,7 +232,7 @@ const App = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setState({
             ...state,
             rows: data,
@@ -230,7 +247,7 @@ const App = () => {
       fetch(`${url}/positions/aggregation_positions_count_groupby`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setState({
             ...state,
             rows: data,
@@ -245,7 +262,7 @@ const App = () => {
       fetch(`${url}/positions/division`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setState({
             ...state,
             rows: data,
@@ -284,9 +301,7 @@ const App = () => {
 
   const getCityProjQuery = () => {};
   const getCountryProjQuery = () => {};
-
-  const updateTotalPosHandle = () => {};
-  // Do action of division query
+  
 
   return (
     <>
@@ -450,7 +465,7 @@ const App = () => {
                       
                       {
                         <Typography variant="h5"> {state.totalPos} </Typography>
-                      }<Button variant="outlined" onClick={updateTotalPosHandle}>Update</Button>
+                      }<Button variant="outlined" onClick={updateNumberOfPositions}>Update</Button>
                     </Item>
                   </Grid>
                 </Grid>
@@ -536,8 +551,8 @@ const App = () => {
                     <TextField required id="insertDesc" label="Description" />
                     <TextField required id="insertComID" label="Company ID" />
                     <TextField required id="insertpType" label="Position Type" />
-                    <TextField required id="insertCountryName" label="Position Type" />
-                    <TextField required id="insertCityName" label="Position Type" />
+                    <TextField required id="insertCountryName" label="Country" />
+                    <TextField required id="insertCityName" label="City" />
                     <Box
                       sx={{
                         display: "flex",
