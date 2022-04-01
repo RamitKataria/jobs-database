@@ -29,7 +29,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-const url = "https://jobsdata.herokuapp.com/api";
+const apiUrl = "https://jobsdata.herokuapp.com/api";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -88,57 +88,36 @@ const App = () => {
     DeleteMode.style.display = "block";
   };
 
-  let insertData = {
-    insertTitle: null,
-    insertExpiry: null,
-    insertURL: null,
-    insertDesc: null,
-    insertComID: null,
-    insertpType: null,
-    insertCountryName: null,
-    insertCityName: null,
-  };
-
-  let updateData = {
-    updatepID: null,
-    updateTitile: null,
-    updateExpiry: null,
-    updateURL: null,
-    updateDesc: null,
-  };
-
-  let deleteCasData = {
-    deleteCountry: null,
-  };
-
   // get data from insert part textfield and save in insertData Object
   //Do not forget to update numPositions
   const submitInsertDataClick = () => {
     insertPosition(
-      insertData.insertTitle = document.getElementById("insertTitle").value,
-      insertData.insertExpiry = document.getElementById("insertExpiry").value,
-      insertData.insertURL = document.getElementById("insertUrl").value,
-      insertData.insertDesc = document.getElementById("insertDesc").value,
-      insertData.insertComID = document.getElementById("insertComID").value,
-      insertData.insertCountryName = document.getElementById("insertCountryName").value,
-      insertData.insertCityName = document.getElementById("insertCityName").value,
-      insertData.insertpType = document.getElementById("insertpType").value)
+      document.getElementById("insertTitle").value,
+      document.getElementById("insertExpiry").value,
+      document.getElementById("insertUrl").value,
+      document.getElementById("insertDesc").value,
+      document.getElementById("insertComID").value,
+      document.getElementById("insertCountryName").value,
+      document.getElementById("insertCityName").value,
+      document.getElementById("insertpType").value)
   };
 
   // get data from insert part textfield and save in updateData Object
   const submitUpdateDataClick = () => {
-    updateData.updatepID = document.getElementById("updatepID").value;
-    updateData.updateTitle = document.getElementById("updateTitle").value;
-    updateData.updateExpiry = document.getElementById("updateExpiry").value;
-    updateData.updateURL = document.getElementById("updateUrl").value;
-    updateData.updateDesc = document.getElementById("updateDesc").value;
+    updatePosition(
+      document.getElementById("updatepID").value,
+      document.getElementById("updateTitle").value,
+      document.getElementById("updateExpiry").value,
+      document.getElementById("updateUrl").value,
+      document.getElementById("updateDesc").value
+    )
   };
 
   //Do not forget to update numPositions
   const submitDeleteDataClick = () => {
     let pID = document.getElementById("deletepID").value;
     try {
-      const response = fetch(`${url}/positions/${pID}`, {
+      const response = fetch(`${apiUrl}/positions/${pID}`, {
         method: 'DELETE'
       });
       console.log(response);
@@ -148,14 +127,36 @@ const App = () => {
   };
 
   const submitDeleteCasDataClick = () => {
-    deleteCasData.deleteCountry =
-      document.getElementById("deleteCountry").value;
+    let counName = document.getElementById("deleteCountry").value;
+    console.log(`${apiUrl}/countries/${counName}`);
+    try {
+      const response = fetch(`${apiUrl}/countries/${counName}`, {
+        method: "DELETE",
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // check the filter, query and get data
   // /api/positions/:queryType/:pid/:url/:description/:title/:expiry/:comid/:ptype/
   async function getDataProjQuery() {
-    
+    try {
+      fetch(
+        `${apiUrl}/positions/projection/true/true/false/true/true/false/false`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          // console.log(data);
+          setState({
+            ...state,
+            rows: data,
+          });
+        });
+    } catch (error) {
+      console.log("Error:\n", error);
+    }
   }
 
   async function insertPosition(
@@ -168,32 +169,66 @@ const App = () => {
     cityName,
     pType
   ) {
-    console.log(
-      `title: ${title}, expiry: ${expiry}, url: ${url}, desc: ${description}, comID: ${comID}, country: ${counName}, city: ${cityName}, type: ${pType}`
-    )
+    let postBody = JSON.stringify({
+      url: url,
+      description: description,
+      title: title,
+      expiry: expiry,
+      comid: parseInt(comID),
+      ptype: pType.toString(),
+      cityname: cityName,
+      counname: counName,
+    });
+
+    console.log(postBody)
+
     try {
-      const response = await fetch(`${url}/positions/`, {
+      const response = await fetch(`${apiUrl}/positions/`, {
         method: "POST",
-        body: {
-          pid: 0,
-          url: url,
-          description: description,
-          title: title,
-          expiry: expiry,
-          comid: comID,
-          ptype: pType,
-          cityname: cityName,
-          counname: counName,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         },
+        body: postBody,
       });
-      console.log(response);
+      console.log(response.json());
+    } catch {}
+  }
+
+  async function updatePosition(
+    pID,
+    title,
+    expiry,
+    url,
+    description
+  ) {
+    let postBody = JSON.stringify({
+      pid: parseInt(pID),
+      url: url,
+      description: description,
+      title: title,
+      expiry: expiry
+    });
+
+    console.log(postBody)
+
+    try {
+      const response = await fetch(`${apiUrl}/positions/`, {
+        method: "PUT",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: postBody,
+      });
+      console.log(response.json());
     } catch {}
   }
 
   const selectionQueryHandle = () => {
     try {
       fetch(
-        `${url}/positions/selection/true/${state.showURL}/false/true/${state.showExpiry}/false/false`
+        `${apiUrl}/positions/selection/true/${state.showURL}/false/true/${state.showExpiry}/false/false`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -211,7 +246,7 @@ const App = () => {
   const projectionQueryHandle = () => {
     try {
       fetch(
-        `${url}/positions/projection/true/${state.showURL}/false/true/${state.showExpiry}/false/false`
+        `${apiUrl}/positions/projection/true/${state.showURL}/false/true/${state.showExpiry}/false/false`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -228,7 +263,7 @@ const App = () => {
   const joinQueryHandle = () => {
     try {
       fetch(
-        `${url}/positions/join/`
+        `${apiUrl}/positions/join/`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -244,7 +279,7 @@ const App = () => {
   };
   const nestedAggregationHandle = () => {
     try {
-      fetch(`${url}/positions/aggregation_positions_count_groupby`)
+      fetch(`${apiUrl}/positions/aggregation_positions_count_groupby`)
         .then((response) => response.json())
         .then((data) => {
           // console.log(data);
@@ -259,7 +294,7 @@ const App = () => {
   };
   const divisionQueryHandle = () => {
     try {
-      fetch(`${url}/positions/division`)
+      fetch(`${apiUrl}/positions/division`)
         .then((response) => response.json())
         .then((data) => {
           // console.log(data);
@@ -276,7 +311,7 @@ const App = () => {
   function updateNumberOfPositions() {
     let num = 0;
     try {
-      fetch(`${url}/positions/aggregation_positions_count`)
+      fetch(`${apiUrl}/positions/aggregation_positions_count`)
         .then((response) => response.json())
         .then((data) => {
           console.log("Success getting numPos:" + data._count);
@@ -294,8 +329,6 @@ const App = () => {
         totalPos: num,
       });
     }
-
-    
 
   }
 
