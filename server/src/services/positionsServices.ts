@@ -1,30 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 const { prisma } = require('../config');
 
-// async function querySwitchPositions(req: Request, res: Response) {
-//   if (req.body.queryType) {
-//     switch (req.body.queryType) {
-//       case "projection":
-//         return await projectionQueryPositions(req, res);
-//       case "selection":
-//         return await selectionQueryPositions(req, res);
-//       case "join":
-//         return await joinQueryPositions(req, res);
-//       case "aggregation_positions_count":
-//         return await aggregationQueryPositions(req, res);
-//       case "aggregation_positions_count_groupby":
-//         return await aggregationQueryPositionsGroupBy(req, res);
-//       case "division":
-//         return await divisionQueryPositions(req, res);
-//       default:
-//         res.status(404).json({err: "Not found"});
-//     }
-//   } else {
-//     return await selectAllFields(req, res);
-//   }
-//
-// }
-
 async function querySwitchPositions(req: Request, res: Response) {
   switch (req.params.queryType) {
     case "projection":
@@ -142,9 +118,14 @@ async function joinQueryPositions(req: Request, res: Response) {
     if(getQuery === null) {
       res.status(400).json(getQuery);
     } else {
+      // @ts-ignore
+      for (let result of getQuery) {
+        result.companies = result.companies.comname;
+      }
       res.status(200).json(getQuery);
     }
   } catch (e) {
+    console.log(e);
     res.status(400).json({err: e});
   }
 }
@@ -189,6 +170,10 @@ async function aggregationQueryPositionsGroupBy(req: Request, res: Response){
     if(getQuery2 === null) {
       res.status(404).json(getQuery2);
     } else{
+      // @ts-ignore
+      for (let result of getQuery2) {
+        result._count= result._count.pid;
+      }
       res.status(200).json(getQuery2);
     }
   } catch (e) {
@@ -214,6 +199,8 @@ async function aggregationQueryPositions(req: Request, res: Response){
     if(getQuery2 === null) {
       res.status(404).json(getQuery2);
     } else{
+      //@ts-ignore
+      getQuery2._count= getQuery2._count.pid;
       res.status(200).json(getQuery2);
     }
   } catch (e) {
