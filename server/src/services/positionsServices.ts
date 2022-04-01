@@ -298,12 +298,13 @@ async function updateRowPositions(req: Request, res: Response) {
 
     await prisma.positions.update({
       where:{
-        pid: reqData.pid
+        pid: reqData.fields.pid
       },
       data: reqData.fields
     });
     res.status(200).json({status: "OK"});
   } catch (e) {
+    console.log(e);
     res.status(400).json({err: e});
   }
 }
