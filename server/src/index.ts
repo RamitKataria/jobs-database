@@ -19,8 +19,8 @@ const origin = {
 }
 
 const limiter = rateLimit({
-  windowMs: 51 * 1000, // 5 seconds
-  max: 5, // 5 requests,
+  windowMs: 1000, // 5 seconds
+  max: 2, // 5 requests,
 })
 
 const app = express(); // create an instance of the express module (app is the conventional variable name used)
