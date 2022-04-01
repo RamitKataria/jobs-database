@@ -53,21 +53,21 @@ CREATE TABLE Located_In (
 	FOREIGN KEY (cityName, counName) REFERENCES Cities
 );
 
-DROP TABLE Cities CASCADE;
-CREATE TABLE Cities (
-        cityName VARCHAR(100),
-        stateName VARCHAR(100),
-        counName VARCHAR(100) NOT NULL,
-        PRIMARY KEY (cityName, counName),
-        FOREIGN KEY (counName) REFERENCES Countries
-	ON DELETE CASCADE
-    );
 
 DROP TABLE Countries CASCADE;
 CREATE TABLE Countries (
         counName VARCHAR(100),
         PRIMARY KEY (counName)
     );
+
+DROP TABLE Cities CASCADE;
+CREATE TABLE Cities (
+        cityName VARCHAR(100),
+        stateName VARCHAR(100),
+        counName VARCHAR(100) NOT NULL,
+        PRIMARY KEY (cityName, counName),
+        FOREIGN KEY (counName) REFERENCES Countries ON DELETE CASCADE
+);
 
 DROP TABLE Citizenship_Req CASCADE;
 CREATE TABLE Citizenship_Req (
@@ -147,17 +147,19 @@ VALUES ('Education'),
 
 INSERT INTO Countries (counName)
 VALUES ('United States'),
-      ('Canada'),
-      ('United Kingdom'),
-      ('France'),
-      ('China');
+       ('Canada'),
+       ('United Kingdom'),
+       ('France'),
+       ('China'),
+       ('Mexico');
 
 INSERT INTO Cities (cityName, counName, stateName)
 VALUES ('Los Angeles', 'United States', 'California'),
-      ('Vancouver', 'Canada', 'British Columbia'),
-      ('New York', 'United States', 'New York'),
-      ('Toronto', 'Canada', 'Ontario'),
-      ('London', 'United Kingdom', 'London');
+       ('Vancouver', 'Canada', 'British Columbia'),
+       ('New York', 'United States', 'New York'),
+       ('Toronto', 'Canada', 'Ontario'),
+       ('London', 'United Kingdom', 'London'),
+       ('Mexico City', 'Mexico', 'Mexico City');
 
 INSERT INTO Requirements (reqID, strict, citizenReqFlag, expReqFlag)
 VALUES (1,true, true, false),
