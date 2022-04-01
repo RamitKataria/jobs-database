@@ -34,19 +34,31 @@ app.use(limiter);
 app.route('/api')
     .get(positionsServices.testAPI);
 
-app.route('/api/positions')
+app.route('/api/positions/:queryType/:pid/:url/:description/:title/:expiry/:comid/:ptype/')
     .get(positionsServices.querySwitchPositions)
+
+app.route('/api/positions/:queryType/')
+    .get(positionsServices.querySwitchPositions)
+
+app.route('/api/positions')
     .post(positionsServices.insertRowPositions)
     .put(positionsServices.updateRowPositions)
+
+app.route('/api/positions/:pid/')
     .delete(positionsServices.deleteRowPositions);
 
-app.route('/api/cities')
+app.route('/api/cities/:cityname/:statename/:counname/')
     .get(citiesServices.projectionQueryCities)
+
+app.route('/api/cities/:cityname/:counname/')
     .delete(citiesServices.deleteRowCities);
 
 app.route('/api/countries')
     .get(countriesServices.projectionQueryCountries)
+
+app.route('/api/countries/:counname')
     .delete(countriesServices.deleteRowCountries);
+
 
 app.listen(PORT, () => { // start server and listen on specified port
   console.log(`App is running on ${PORT}`) // confirm server is running and log port to the console

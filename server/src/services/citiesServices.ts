@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 const {prisma} = require('../config');
 
 function selectFieldOptionsCities(fields: any): any {
-    let cityname = fields.cityname;
-    let statename = fields.statename;
-    let counname = fields.counname;
+    let cityname = eval(fields.cityname);
+    let statename = eval(fields.statename);
+    let counname = eval(fields.counname);
 
     const options = {
         cityname: cityname,
@@ -17,7 +17,7 @@ function selectFieldOptionsCities(fields: any): any {
 
 async function projectionQueryCities(req: Request, res: Response) {
     try{
-        const fields = req.body.fields;
+        const fields = req.params;
         const selectOptions = selectFieldOptionsCities(fields);
         const getQuery: object | null = await prisma.cities.findMany({
             select: selectOptions
@@ -35,7 +35,7 @@ async function projectionQueryCities(req: Request, res: Response) {
 
 async function deleteRowCities(req: Request, res: Response) {
     try{
-        const reqData = req.body;
+        const reqData = req.params;
 
         await prisma.cities.delete({
             where: {

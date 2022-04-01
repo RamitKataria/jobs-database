@@ -1,28 +1,47 @@
 import { Request, Response, NextFunction } from 'express';
 const { prisma } = require('../config');
 
-async function querySwitchPositions(req: Request, res: Response) {
-  if (req.body.queryType) {
-    switch (req.body.queryType) {
-      case "projection":
-        return await projectionQueryPositions(req, res);
-      case "selection":
-        return await selectionQueryPositions(req, res);
-      case "join":
-        return await joinQueryPositions(req, res);
-      case "aggregation_positions_count":
-        return await aggregationQueryPositions(req, res);
-      case "aggregation_positions_count_groupby":
-        return await aggregationQueryPositionsGroupBy(req, res);
-      case "division":
-        return await divisionQueryPositions(req, res);
-      default:
-        res.status(404).json({err: "Not found"});
-    }
-  } else {
-    return await selectAllFields(req, res);
-  }
+// async function querySwitchPositions(req: Request, res: Response) {
+//   if (req.body.queryType) {
+//     switch (req.body.queryType) {
+//       case "projection":
+//         return await projectionQueryPositions(req, res);
+//       case "selection":
+//         return await selectionQueryPositions(req, res);
+//       case "join":
+//         return await joinQueryPositions(req, res);
+//       case "aggregation_positions_count":
+//         return await aggregationQueryPositions(req, res);
+//       case "aggregation_positions_count_groupby":
+//         return await aggregationQueryPositionsGroupBy(req, res);
+//       case "division":
+//         return await divisionQueryPositions(req, res);
+//       default:
+//         res.status(404).json({err: "Not found"});
+//     }
+//   } else {
+//     return await selectAllFields(req, res);
+//   }
+//
+// }
 
+async function querySwitchPositions(req: Request, res: Response) {
+  switch (req.params.queryType) {
+    case "projection":
+      return await projectionQueryPositions(req, res);
+    case "selection":
+      return await selectionQueryPositions(req, res);
+    case "join":
+      return await joinQueryPositions(req, res);
+    case "aggregation_positions_count":
+      return await aggregationQueryPositions(req, res);
+    case "aggregation_positions_count_groupby":
+      return await aggregationQueryPositionsGroupBy(req, res);
+    case "division":
+      return await divisionQueryPositions(req, res);
+    default:
+      res.status(404).json({err: "Not found"});
+  }
 }
 
 async function selectAllFields(req: Request, res: Response) {
@@ -39,13 +58,13 @@ async function selectAllFields(req: Request, res: Response) {
 }
 
 function selectFieldOptionsPositions(fields: any): any {
-  let pid = fields.pid;
-  let url = fields.url;
-  let description = fields.description;
-  let title = fields.title;
-  let expiry = fields.expiry;
-  let comid = fields.comid;
-  let ptype = fields.ptype;
+  let pid = eval(fields.pid);
+  let url = eval(fields.url);
+  let description = eval(fields.description);
+  let title = eval(fields.title);
+  let expiry = eval(fields.expiry);
+  let comid = eval(fields.comid);
+  let ptype = eval(fields.ptype);
 
     const options = {
       pid: pid,
@@ -61,7 +80,7 @@ function selectFieldOptionsPositions(fields: any): any {
 
 async function projectionQueryPositions(req: Request, res: Response) {
   try{
-    const fields = req.body.fields;
+    const fields = req.params;
     const selectOptions = selectFieldOptionsPositions(fields);
     const getQuery: object | null = await prisma.positions.findMany({
       select: selectOptions
@@ -72,13 +91,15 @@ async function projectionQueryPositions(req: Request, res: Response) {
       res.status(200).json(getQuery);
     }
   } catch (e) {
+    console.log(e);
     res.status(400).json({err: e});
   }
 }
 
 async function selectionQueryPositions(req: Request, res: Response) {
   try{
-    const fields = req.body.fields;
+    const fields = req.params;
+    const selectOptions = selectFieldOptionsPositions(fields);
     let date = new Date();
     const getQuery: object | null = await prisma.positions.findMany({
       where: {
@@ -86,7 +107,7 @@ async function selectionQueryPositions(req: Request, res: Response) {
           gt: date
         }
       },
-      select: fields
+      select: selectOptions
     });
     if(getQuery === null) {
       res.status(400).json(getQuery);
@@ -288,15 +309,16 @@ async function updateRowPositions(req: Request, res: Response) {
 
 async function deleteRowPositions(req: Request, res: Response) {
   try{
-    const reqData = req.body;
+    const reqData = req.params;
 
     await prisma.positions.delete({
       where: {
-        pid: reqData.pid
+        pid: parseInt(reqData.pid)
       }
     });
     res.status(200).json({status: "OK"});
   } catch (e) {
+    console.log(e);
     res.status(400).json({err: e});
   }
 }
