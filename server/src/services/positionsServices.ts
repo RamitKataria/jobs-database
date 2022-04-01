@@ -136,13 +136,29 @@ async function insertRowPositions(req: Request, res: Response) {
 
     await prisma.positions.create({
       data: {
-        pid: reqData.pid,
         url: reqData.url,
         description: reqData.description,
         title: reqData.title,
         expiry: reqData.expiry,
         comid: reqData.comid,
         ptype: reqData.ptype
+      }
+    });
+
+    const getQuery = await prisma.positions.findFirst({
+      orderBy:{
+        pid: 'desc'
+      },
+      select: {
+        pid: true
+      }
+    });
+
+    await prisma.located_in.create({
+      data: {
+        pid: getQuery.pid,
+        cityname: reqData.cityname,
+        counname: reqData.counname
       }
     });
     res.status(200).json({status: "OK"});
