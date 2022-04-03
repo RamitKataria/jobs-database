@@ -44,8 +44,8 @@ const App = () => {
   let [state, setState] = useState({
     showURL: false,
     showExpiry: false,
-    rows: [{ None: "None" }],
-    totalPos: 0
+    rows: [],
+    totalPos: 0,
   });
 
   /* handle buttonClicks */
@@ -99,7 +99,8 @@ const App = () => {
       document.getElementById("insertComID").value,
       document.getElementById("insertCountryName").value,
       document.getElementById("insertCityName").value,
-      document.getElementById("insertpType").value)
+      document.getElementById("insertpType").value
+    );
   };
 
   // get data from insert part textfield and save in updateData Object
@@ -110,7 +111,7 @@ const App = () => {
       document.getElementById("updateExpiry").value,
       document.getElementById("updateUrl").value,
       document.getElementById("updateDesc").value
-    )
+    );
   };
 
   //Do not forget to update numPositions
@@ -118,11 +119,11 @@ const App = () => {
     let pID = document.getElementById("deletepID").value;
     try {
       const response = fetch(`${apiUrl}/positions/${pID}`, {
-        method: 'DELETE'
+        method: "DELETE",
       });
       console.log(response);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -180,14 +181,14 @@ const App = () => {
       counname: counName,
     });
 
-    console.log(postBody)
+    console.log(postBody);
 
     try {
       const response = await fetch(`${apiUrl}/positions/`, {
         method: "POST",
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
         body: postBody,
       });
@@ -195,32 +196,25 @@ const App = () => {
     } catch {}
   }
 
-  async function updatePosition(
-    pID,
-    title,
-    expiry,
-    url,
-    description
-  ) {
-
+  async function updatePosition(pID, title, expiry, url, description) {
     let postBody = JSON.stringify({
       fields: {
         pid: parseInt(pID),
         url: url,
         description: description,
         title: title,
-        expiry: expiry
-      }
+        expiry: expiry,
+      },
     });
 
-    console.log(postBody)
+    console.log(postBody);
 
     try {
       const response = await fetch(`${apiUrl}/positions/`, {
         method: "PUT",
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
         body: postBody,
       });
@@ -265,9 +259,7 @@ const App = () => {
   };
   const joinQueryHandle = () => {
     try {
-      fetch(
-        `${apiUrl}/positions/join/`
-      )
+      fetch(`${apiUrl}/positions/join/`)
         .then((response) => response.json())
         .then((data) => {
           // console.log(data);
@@ -331,7 +323,6 @@ const App = () => {
         totalPos: num,
       });
     }
-
   }
 
   const getCityProjQuery = () => {
@@ -364,7 +355,6 @@ const App = () => {
       console.log("Error:\n", error);
     }
   };
-  
 
   return (
     <>
@@ -522,13 +512,16 @@ const App = () => {
                   <Grid item xs={6}>
                     <Item>
                       <Typography variant="h6">
-                        
                         Total Positions available
                       </Typography>
-                      
-                      {
-                        <Typography variant="h5"> {state.totalPos} </Typography>
-                      }<Button variant="outlined" onClick={updateNumberOfPositions}>Update</Button>
+
+                      {<Typography variant="h5"> {state.totalPos} </Typography>}
+                      <Button
+                        variant="outlined"
+                        onClick={updateNumberOfPositions}
+                      >
+                        Update
+                      </Button>
                     </Item>
                   </Grid>
                 </Grid>
@@ -542,33 +535,20 @@ const App = () => {
                       "& > *": { m: 1 },
                     }}
                   >
-                  <ButtonGroup
-                    variant = "contained"
-                    aria-label="outlined button group"
-                  >
-                    <Button
-                      onClick={getDataProjQuery}
-                      align="right"
+                    <ButtonGroup
+                      variant="contained"
+                      aria-label="outlined button group"
                     >
-                      Show all positions
-                    </Button>
-                    <Button
-                      onClick={getCountryProjQuery}
-                      align="right"
-                    >
-                      Show all Countries
-                    </Button>
-                    <Button
-                      onClick={getCityProjQuery}
-                      align="right"
-                    >
-                      Show all Cities
-                    </Button>
-                  </ButtonGroup>
-
-                    
-
-                    
+                      <Button onClick={getDataProjQuery} align="right">
+                        Show all positions
+                      </Button>
+                      <Button onClick={getCountryProjQuery} align="right">
+                        Show all Countries
+                      </Button>
+                      <Button onClick={getCityProjQuery} align="right">
+                        Show all Cities
+                      </Button>
+                    </ButtonGroup>
                   </Box>
                 </Container>
               </AccordionDetails>
@@ -613,8 +593,16 @@ const App = () => {
                     <TextField required id="insertUrl" label="URL" />
                     <TextField required id="insertDesc" label="Description" />
                     <TextField required id="insertComID" label="Company ID" />
-                    <TextField required id="insertpType" label="Position Type" />
-                    <TextField required id="insertCountryName" label="Country" />
+                    <TextField
+                      required
+                      id="insertpType"
+                      label="Position Type"
+                    />
+                    <TextField
+                      required
+                      id="insertCountryName"
+                      label="Country"
+                    />
                     <TextField required id="insertCityName" label="City" />
                     <Box
                       sx={{
@@ -730,19 +718,29 @@ const App = () => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow key="Table Header">
-                  {Object.keys(state.rows[0]).map((key) => (
-                    <TableCell align="left"> {key} </TableCell>
-                  ))}
+                  {state.rows &&
+                    state.rows.length > 0 &&
+                    Object.keys(state.rows[0]).map((key) => (
+                      <TableCell align="left"> {key} </TableCell>
+                    ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {state.rows.map((row) => (
-                  <TableRow key={Object.keys(row)[0] ? row[Object.keys(row)[0]] + row[Object.keys(row)[1]] : row[Object.keys(row)[0]]}>
-                    {Object.keys(row).map((key) => (
-                      <TableCell align="left"> {row[key]} </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+                {state.rows &&
+                  state.rows.length > 0 &&
+                  state.rows.map((row) => (
+                    <TableRow
+                      key={
+                        Object.keys(row)[1]
+                          ? row[Object.keys(row)[0]] + row[Object.keys(row)[1]]
+                          : row[Object.keys(row)[0]]
+                      }
+                    >
+                      {Object.keys(row).map((key) => (
+                        <TableCell align="left"> {row[key]} </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
