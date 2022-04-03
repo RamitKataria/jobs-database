@@ -45,17 +45,16 @@ const App = () => {
     showURL: false,
     showExpiry: false,
     rows: [],
+    adminMode: false,
     totalPos: 0,
   });
 
   /* handle buttonClicks */
   const handleAdminClick = () => {
-    const AdminModeEdit = document.getElementById("AdminMode");
-    if (AdminModeEdit.style.display === "block") {
-      AdminModeEdit.style.display = "none";
-    } else {
-      AdminModeEdit.style.display = "block";
-    }
+    setState({
+      ...state,
+      adminMode: !state.adminMode
+    })
   };
 
   const handleInsertModeClick = () => {
@@ -377,7 +376,7 @@ const App = () => {
                     CPSC304: Job Database
                   </Typography>
                   <Button color="inherit" onClick={handleAdminClick}>
-                    Switch to admin
+                    Switch Admin/User
                   </Button>
                 </Toolbar>
               </AppBar>
@@ -553,6 +552,7 @@ const App = () => {
                 </Container>
               </AccordionDetails>
             </Accordion>
+            {state.adminMode && 
             <Accordion id="AdminMode">
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -711,7 +711,7 @@ const App = () => {
                   </Box>
                 </div>
               </AccordionDetails>
-            </Accordion>
+            </Accordion>}
           </section>
 
           <TableContainer id="table-from-data" component={Paper}>
